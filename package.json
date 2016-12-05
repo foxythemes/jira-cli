@@ -1,0 +1,19 @@
+{
+  "name": "jira-cli",
+  "version": "1.0.0",
+  "description": "A Jira command line client",
+  "main": "lib/jira-cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "jira": "./lib/jira-cli.js"
+  },
+  "author": "Eduardo Henao",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "inquirer": "^1.2.3",
+    "jira-client": "^4.2.0"
+  }
+}
