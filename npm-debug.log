@@ -1,0 +1,106 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'publish' ]
+2 info using npm@3.10.8
+3 info using node@v6.9.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/simetria/projects/jira-cli',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/simetria/.npm/jira-cl/1.0.0/package.tgz not in flight; packing
+9 verbose correctMkdir /home/simetria/.npm correctMkdir not in flight; initializing
+10 info lifecycle jira-cl@1.0.0~prepublish: jira-cl@1.0.0
+11 silly lifecycle jira-cl@1.0.0~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/home/simetria/.npm/jira-cl/1.0.0/package.tgz',
+12 verbose tar pack   '/home/simetria/projects/jira-cli' ]
+13 verbose tarball /home/simetria/.npm/jira-cl/1.0.0/package.tgz
+14 verbose folder /home/simetria/projects/jira-cli
+15 verbose addLocalTarball adding from inside cache /home/simetria/.npm/jira-cl/1.0.0/package.tgz
+16 verbose correctMkdir /home/simetria/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd jira-cl@1.0.0
+18 verbose afterAdd /home/simetria/.npm/jira-cl/1.0.0/package/package.json not in flight; writing
+19 verbose correctMkdir /home/simetria/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /home/simetria/.npm/jira-cl/1.0.0/package/package.json written
+21 silly publish { name: 'jira-cl',
+21 silly publish   version: '1.0.0',
+21 silly publish   description: 'A Jira command line client',
+21 silly publish   main: 'lib/jira-cli.js',
+21 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+21 silly publish   bin: { jira: './lib/jira-cli.js' },
+21 silly publish   author: { name: 'Eduardo Henao' },
+21 silly publish   license: 'MIT',
+21 silly publish   dependencies:
+21 silly publish    { commander: '^2.9.0',
+21 silly publish      inquirer: '^1.2.3',
+21 silly publish      'jira-client': '^4.2.0' },
+21 silly publish   readme: '# jira-cli\n\nThis is a command line client Jira API, useful to create new issues.\n\n## Getting Started\n\n*  Install with npm: `npm install -g jira-cl`\n*  Run it with `jira [command] [arguments]`\n\n### Initial Setup\nWhen running the first time (or if you didn\'t create a config file), it will ask you for your Jira host, username, password and if you use \'https\' protocol and a new config file will be created in `~/.jira-cli.json` with this data. You can create or modify this file manually.\n\n## Usage\n\nThere is only one main command `create` if no command is provided help is shown:\n\n```\n   Usage:  [options] [command]\n\n\n  Commands:\n\n    create [options]  Create a new issue\n\n  Options:\n\n    -h, --help     output usage information\n    -V, --version  output the version number\n\n```\n\n## License\n\nCopyright (c) 2016 Behuti\nLicensed under the MIT license.\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '37c67e927506f6e0d8d87816ade448164305baa9',
+21 silly publish   _id: 'jira-cl@1.0.0',
+21 silly publish   _shasum: '02bc60247f96f5ae67b0ce3bad044ddddee47049',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name jira-cl
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'jira-cl',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'jira-cl',
+26 silly mapToRegistry   name: 'jira-cl',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/jira-cl
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /home/simetria/.npm/jira-cl/1.0.0/package.tgz
+30 verbose request uri https://registry.npmjs.org/jira-cl
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 13:19:22
+33 verbose request using bearer token for auth
+34 verbose request id 6f817ec316b30302
+35 http request PUT https://registry.npmjs.org/jira-cl
+36 http 403 https://registry.npmjs.org/jira-cl
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '95',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Mon, 05 Dec 2016 18:19:24 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-atl6239-ATL',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1480961963.421595,VS0,VE677',
+37 verbose headers   vary: 'Accept-Encoding' }
+38 verbose request invalidating /home/simetria/.npm/registry.npmjs.org/jira-cl on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 1.0.0." : jira-cl
+40 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+40 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:187:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1044:10)
+40 verbose stack     at emitOne (events.js:96:13)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:965:12)
+41 verbose statusCode 403
+42 verbose pkgid jira-cl
+43 verbose cwd /home/simetria/projects/jira-cli
+44 error Linux 4.4.0-51-generic
+45 error argv "/usr/bin/nodejs" "/usr/bin/npm" "publish"
+46 error node v6.9.1
+47 error npm  v3.10.8
+48 error code E403
+49 error "You cannot publish over the previously published version 1.0.0." : jira-cl
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
