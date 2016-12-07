@@ -16,6 +16,7 @@
   "author": "Eduardo Henao",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^1.1.3",
     "commander": "^2.9.0",
     "inquirer": "^1.2.3",
     "jira-client": "^4.2.0"
