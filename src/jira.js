@@ -1,35 +1,55 @@
+// Native
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs-promise';
+
+// Packages
 import JiraApi from 'jira-client';
 import inquirer from 'inquirer';
-import jiraDocs from './docs';
 import color from 'chalk';
 
-var docs = new jiraDocs;
+// Local
+import jiraDocs from './docs';
 
-var configFilePath = path.join(process.env.HOME, '.jira-cl.json');
-var config, jiraHost, jiraUser, password;
+export default class JiraCLI {
 
-/**
- * Load config file
- */
+	constructor( config ){
+		// Get the sub-commands documentation
+		this.docs = new jiraDocs;
+		this.config = config;
 
-var loadConfigFile = function(path) {
-  var config;
-  config = fs.readFileSync(path);
-  return JSON.parse(config);
-};
+		// Connect to Jira
+		var jira = new JiraApi( config );
 
-// Load config file
-config = loadConfigFile(configFilePath);
+		var projectsList = [];
+		var projectKeys = [];
+		var issueTypeList = [];
+	}
 
-// Connect to Jira
-var jira = new JiraApi(config);
+	cmdConfig( cmd, options){
+		// If no command is provided show help
+		if (typeof cmd === 'undefined'){
+			this.docs.config();
+		}else{
 
-var projectsList = [];
-var projectKeys = [];
-var issueTypeList = [];
+			// Remove config file
+			if ( cmd == 'remove' ){
+				this.removeConfigFile();
+			}
+		}
+	}
 
+	// Remove config file
+	removeConfigFile(){
+		console.log(this.config.filePath);
+		fs.unlinkSync( this.config.filePath );
+	  console.log('Config file succesfully deleted');
+
+	  process.exit();
+	}
+}
+
+
+/*
 // Make a jira API request
 function apiRequest(path){
 	return jira.doRequest(jira.makeRequestHeader(jira.makeUri({
@@ -164,31 +184,10 @@ function createIssue(){
 			});
 		});
 	});
-}
-
-// Remove config file
-function removeConfigFile(){
-	fs.unlinkSync(configFilePath);
-  console.log('Config file succesfully deleted');
-
-  process.exit();
-}
-
+}*/
+/*
 module.exports = {
 	createIssue: function(arg){
 		createIssue();
-	},
-	config: function(cmd, options){
-
-		// If no command is provided show help
-		if (typeof cmd === 'undefined'){
-			docs.config();
-		}else{
-
-			// Remove config file
-			if ( cmd == 'remove' ){
-				removeConfigFile();
-			}
-		}
 	}
-};
+};*/
