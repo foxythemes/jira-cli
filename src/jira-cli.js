@@ -9,7 +9,7 @@ import JiraCLI from './jira';
 
 // Load the config file
 const configFile = new Config;
-
+ 
 // Initiaize the config file
 configFile.init('.jira-cl.json').then(function(){
 
@@ -38,7 +38,7 @@ configFile.init('.jira-cl.json').then(function(){
 	  .command('config [command]')
 	  .description('Configuration file options')
 	  .option("-h, --help", "")
-	  .action(function(c, o){
+	  .action((c, o) => {
 	  	jira.cmdConfig(c, o);
 	  });
 

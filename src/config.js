@@ -4,6 +4,7 @@ import fs from 'fs-promise';
 
 // Packages
 import inquirer from 'inquirer';
+import color from 'chalk';
 
 export default class Config {
 
@@ -16,12 +17,12 @@ export default class Config {
 
 		// If file doesn't exist then create it
 		if ( !fs.existsSync( filePath ) ) {
-			this.config = await this.createConfigFile( filePath );
+			this.config = await this.createFile( filePath );
 
 			// Exit when the file is created
 			process.exit();
 		} else {
-			this.config = await this.loadConfigFile( filePath );
+			this.config = await this.loadFile( filePath );
 		}
 
 		return this.config;
@@ -31,7 +32,7 @@ export default class Config {
 	* Load config file
 	*/
 
-	async loadConfigFile( filePath ) {
+	async loadFile( filePath ) {
 
 	  return fs.readFile(filePath, {encoding:'utf8'}).then(function( config ){
 	  	return JSON.parse( config );
@@ -41,7 +42,7 @@ export default class Config {
 	/**
 	* Create config file
 	*/
-	async createConfigFile( filePath ) {
+	async createFile( filePath ) {
 
 		var questions = [
 		  {
@@ -83,9 +84,22 @@ export default class Config {
 			return fs.writeFile(filePath, JSON.stringify(config), 'utf8')
 				.then(function(){
 					console.log('');
-	   			console.log('Config file succesfully created in: ' + filePath);
+	   			console.log('Config file succesfully created in: ' + color.green(filePath) );
+	   			console.log('');
 	   			return config;
 				});
 		});
+	}
+
+
+	/**
+	* Remove config file
+	*/	
+	removeFile() {
+		fs.unlinkSync( this.filePath );
+		console.log('');
+		console.log(color.red('Config file succesfully deleted!'));
+		console.log('');
+		process.exit();
 	}
 }

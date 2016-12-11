@@ -17,7 +17,7 @@ export default class JiraCLI {
 		this.docs = new jiraDocs;
 		this.config = config;
 
-		// Connect to Jira
+		// Connect  to Jira
 		var jira = new JiraApi( config );
 
 		var projectsList = [];
@@ -33,18 +33,9 @@ export default class JiraCLI {
 
 			// Remove config file
 			if ( cmd == 'remove' ){
-				this.removeConfigFile();
+				this.config.removeFile();
 			}
 		}
-	}
-
-	// Remove config file
-	removeConfigFile(){
-		console.log(this.config.filePath);
-		fs.unlinkSync( this.config.filePath );
-	  console.log('Config file succesfully deleted');
-
-	  process.exit();
 	}
 }
 
