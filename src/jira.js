@@ -58,6 +58,21 @@ class JiraCLI {
 	}
 
 	/**
+	* Show errors from api response
+	*/
+	showErrors( response ){
+		let errors = response.error.errors;
+  	
+  	console.log('');
+
+		for (var key in errors) {
+		  console.log( color.red( 'Error: ' + errors[key] ) );
+		}
+
+		console.log('');
+	}
+
+	/**
 	* Config command handler
 	*/
 	cmdConfig( cmd, options ) {

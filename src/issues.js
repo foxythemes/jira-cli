@@ -88,8 +88,8 @@ export default class JiraIssues {
 					};
 
 					// Create new issue
-					jira.api.addNewIssue(newIssue)
-					  .then(function(issue) {
+					jira.api.addNewIssue( newIssue )
+					  .then(function( issue ) {
 
 					  	let config = jira.config.defaults;
 
@@ -98,8 +98,8 @@ export default class JiraIssues {
 					    console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
 					    console.log('');
 					  })
-					  .catch(function(err) {
-					    console.error(err);
+					  .catch(function( res ) {
+					  	jira.showErrors( res );
 					  });
 				});
 			});
