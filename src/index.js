@@ -20,6 +20,7 @@ jira.init().then(function(){
 	cl
 	  .command('create [options]')
 	  .description('Create a new issue')
+	  .option("-s, --self", "Assign the new issue to the current user")
 	  .action((c, o) => {
 	  	jira.cmdCreate(c, o);
 	  });

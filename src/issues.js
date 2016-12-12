@@ -15,9 +15,10 @@ export default class JiraIssues {
 	}
 
 	/**
-	* Crate a new issue
+	* Crate a new issue 
+	* Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
 	*/
-	create() {
+	create( options ) {
 		
 		this.getMetaData().then(function(meta){
 
@@ -76,16 +77,21 @@ export default class JiraIssues {
 
 					// Create the issue object
 					var newIssue = {
-						"fields": {
-							"project": { 
-							  "key": answers1.project
+						fields: {
+							project: { 
+							  key: answers1.project
 							},
-							"summary": answers2.issueName,
-							"issuetype": {
-							  "name": answers2.issueType
+							summary: answers2.issueName,
+							issuetype: {
+							  name: answers2.issueType
 							}
 						}
 					};
+			    
+			    // Assign the issue to the current user if self option is passed
+			    if(  typeof options.self !== 'undefined' ) {
+			    	newIssue.fields.assignee = { name: 'miguelmich' };
+			    }
 
 					// Create new issue
 					jira.api.addNewIssue( newIssue )

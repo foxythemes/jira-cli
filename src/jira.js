@@ -93,7 +93,7 @@ class JiraCLI {
 	* Create command
 	*/
 	cmdCreate( cmd, options ) {
-		this.issues.create();
+		this.issues.create( options );
 	}
 
 	/**
