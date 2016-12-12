@@ -8,177 +8,90 @@ import inquirer from 'inquirer';
 import color from 'chalk';
 
 // Local
-import jiraDocs from './docs';
+import Config from './config';
+import Issues from './issues';
+import Projects from './projects';
 
-export default class JiraCLI {
+// Singleton instance
+let instance = null;
 
-	constructor( config ){
-		// Get the sub-commands documentation
-		this.docs = new jiraDocs;
-		this.config = config;
+class JiraCLI {
 
-		// Connect  to Jira
-		var jira = new JiraApi( config );
+	constructor(){
 
-		var projectsList = [];
-		var projectKeys = [];
-		var issueTypeList = [];
+		// Set the config file name
+		this.configFileName = '.jira-cl.json';
+
+		// Create a new instance of configuration class
+		this.config = new Config;
+		this.issues = new Issues;
+		this.projects = new Projects;
+
+		if( !instance ){
+      instance = this;
+    }
+
+    return instance;
 	}
 
-	cmdConfig( cmd, options){
+	/**
+	* Initialize the config file
+	*/
+	init() {
+		const _self = this;
+
+		// Get the config file
+		return this.config.init( this.configFileName ).then(function( r ){
+
+			// Connect  to Jira
+			_self.api = new JiraApi( r );
+		});
+	}
+
+	/**
+	* Make a jira API request
+	*/
+	apiRequest( path ) {
+		return this.api.doRequest(this.api.makeRequestHeader(this.api.makeUri({
+			pathname: path,
+		})));
+	}
+
+	/**
+	* Config command handler
+	*/
+	cmdConfig( cmd, options ) {
+
 		// If no command is provided show help
-		if (typeof cmd === 'undefined'){
-			this.docs.config();
-		}else{
+		if ( typeof cmd === 'undefined' ){
+			this.config.docs();
+		} else {
 
 			// Remove config file
 			if ( cmd == 'remove' ){
-				this.config.removeFile();
+				this.config.removeConfigFile();
 			}
+		}
+	}
+
+	/**
+	* Create command
+	*/
+	cmdCreate( cmd, options ) {
+		this.issues.create();
+	}
+
+	/**
+	* Projects
+	*/
+	cmdProject( cmd, options ) {
+
+		if ( typeof cmd === 'undefined' ){
+			this.projects.list();
+		} else {
+			// Commands go here
 		}
 	}
 }
 
-
-/*
-// Make a jira API request
-function apiRequest(path){
-	return jira.doRequest(jira.makeRequestHeader(jira.makeUri({
-		pathname: path,
-	})));
-}
-
-// Get metadata to create the issues
-function getMeta(){
-	return apiRequest('/issue/createmeta');	
-}
-
-// Load jira projects
-function loadProjects(callback){
-	jira.listProjects()
-	  .then(function(projects) {
-
-	  	for (var index in projects){
-	  		projectsList.push(projects[index].name);
-	  		projectKeys.push(projects[index].key);
-	  	}
-
-	  	if (callback){
-	  		callback(projects);
-	  	}
-	  })
-	  .catch(function(err) {
-	    console.error(err);
-	  });
-}
-
-// Load jira issue types
-function loadIssueTypes(callback){
-	jira.listIssueTypes()
-	  .then(function(types) {
-
-	  	for (var i in types){
-	  		issueTypeList.push(types[i].name);
-	  	}
-
-	  	if (callback){
-	  		callback(types);
-	  	}
-	  })
-	  .catch(function(err) {
-	    console.error(err);
-	  });
-}
-
-// Create issue
-function createIssue(){
-
-	getMeta().then(function(meta){
-
-		var projects = []; 
-		var keys = [];
-		var issueTypes = [];
-		var selectedProject;
-
-		// Populate projects, keys and their respective issue types
-		for ( var index in meta.projects ){
-  		projects.push(meta.projects[index].name);
-  		keys.push(meta.projects[index].key);
-  		issueTypes.push(meta.projects[index].issuetypes);
-  	}
-
-  	// Create the project question
-		var project = [
-		  {
-		    type: 'list',
-		    name: 'project',
-		    message: 'Project: ',
-		    choices: projects,
-		    filter: function(val){
-		    	selectedProject = projects.indexOf(val);
-		    	return keys[selectedProject];
-		    }
-		  }
-		];
-
-		inquirer.prompt(project).then(function (answers1) {
-
-			var projectIssueTypes = [];
-
-			// Get issue types of the selected project
-			for ( var i in issueTypes[selectedProject] ){
-	  		projectIssueTypes.push(issueTypes[selectedProject][i].name);
-	  	}
-
-			var questions = [
-			  {
-			    type: 'list',
-			    name: 'issueType',
-			    message: 'Issue type: ',
-			    choices: projectIssueTypes
-			  },
-			  {
-			  	type: 'input',
-			  	name: 'issueName',
-			  	message: 'Please provide the issue name :',
-			  	default: 'New Issue'
-			  }
-			];
-
-			// Ask for the issue name and type
-			inquirer.prompt(questions).then(function (answers2) {
-
-				// Create the issue object
-				var newIssue = {
-					"fields": {
-						"project": { 
-						  "key": answers1.project
-						},
-						"summary": answers2.issueName,
-						"issuetype": {
-						  "name": answers2.issueType
-						}
-					}
-				};
-
-				// Create new issue
-				jira.addNewIssue(newIssue)
-				  .then(function(issue) {
-				  	console.log('');
-				    console.log('New issue: ' + color.bold.red(issue.key));
-				    console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
-				    console.log('');
-				  })
-				  .catch(function(err) {
-				    console.error(err);
-				  });
-			});
-		});
-	});
-}*/
-/*
-module.exports = {
-	createIssue: function(arg){
-		createIssue();
-	}
-};*/
+export default new JiraCLI();

@@ -6,6 +6,7 @@ import fs from 'fs-promise';
 import inquirer from 'inquirer';
 import color from 'chalk';
 
+// Local
 export default class Config {
 
 	/**
@@ -17,22 +18,22 @@ export default class Config {
 
 		// If file doesn't exist then create it
 		if ( !fs.existsSync( filePath ) ) {
-			this.config = await this.createFile( filePath );
+			this.defaults = await this.createConfigFile( filePath );
 
 			// Exit when the file is created
 			process.exit();
 		} else {
-			this.config = await this.loadFile( filePath );
+			this.defaults = await this.loadConfigFile( filePath );
 		}
 
-		return this.config;
+		return this.defaults;
 	}
 
 	/**
 	* Load config file
 	*/
 
-	async loadFile( filePath ) {
+	async loadConfigFile( filePath ) {
 
 	  return fs.readFile(filePath, {encoding:'utf8'}).then(function( config ){
 	  	return JSON.parse( config );
@@ -42,7 +43,7 @@ export default class Config {
 	/**
 	* Create config file
 	*/
-	async createFile( filePath ) {
+	async createConfigFile( filePath ) {
 
 		var questions = [
 		  {
@@ -95,11 +96,25 @@ export default class Config {
 	/**
 	* Remove config file
 	*/	
-	removeFile() {
+	removeConfigFile() {
 		fs.unlinkSync( this.filePath );
 		console.log('');
 		console.log(color.red('Config file succesfully deleted!'));
 		console.log('');
 		process.exit();
+	}
+
+	/**
+	* Documentation
+	*/
+	docs() {
+		console.log('');
+		console.log('  Usage:  config <command>');
+		console.log('');
+		console.log('');
+		console.log('  Commands:');
+		console.log('');
+		console.log('    remove 	Remove the config file');
+		console.log('');
 	}
 }

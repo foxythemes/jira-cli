@@ -4,17 +4,10 @@
 import cl from 'commander';
 
 // Local
-import Config from './config';
-import JiraCLI from './jira';
-
-// Load the config file
-const configFile = new Config;
+import jira from './jira';
  
 // Initiaize the config file
-configFile.init('.jira-cl.json').then(function(){
-
-	// Create a new instance of JiraCLI
-	const jira = new JiraCLI( configFile );
+jira.init().then(function(){
 
 	cl
 	  .version('1.0.0');
@@ -27,11 +20,13 @@ configFile.init('.jira-cl.json').then(function(){
 	cl
 	  .command('create [options]')
 	  .description('Create a new issue')
-	  .action(jira.createIssue);
+	  .action((c, o) => {
+	  	jira.cmdCreate(c, o);
+	  });
 
 
 	/**
-	 * Remove config file
+	 * Configuration sub-command
 	 */
 
 	cl
@@ -40,6 +35,19 @@ configFile.init('.jira-cl.json').then(function(){
 	  .option("-h, --help", "")
 	  .action((c, o) => {
 	  	jira.cmdConfig(c, o);
+	  });
+
+
+	/**
+	 * Project sub-command
+	 */
+
+	cl
+	  .command('project [command]')
+	  .description('Project commands')
+	  .option("-h, --help", "")
+	  .action((c, o) => {
+	  	jira.cmdProject(c, o);
 	  });
 
 
