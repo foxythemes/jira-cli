@@ -1,6 +1,7 @@
 // Packages
 import inquirer from 'inquirer';
 import color from 'chalk';
+import Table from 'cli-table2';
 
 // Local
 import jira from './jira';
@@ -117,11 +118,19 @@ export default class JiraIssues {
 	*/
 	summary() {
 		jira.api.searchJira('assignee = currentUser() and resolution = Unresolved').then(function( r ){
-			
+
 			if( r.total ){
-				r.issues.forEach(function( issue ){
-					console.log( '	' + color.green(color.blue( issue.key ) + '	' +  issue.fields.status.name )  + '	' + issue.fields.summary );
+				var table = new Table({
+				  head: ['Key', 'Status', 'Summary']
 				});
+
+				r.issues.forEach(function( issue ){
+					table.push(
+	    			[color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
+	  			);
+				});
+
+				console.log( table.toString() );
 			}
 		});
 	}
