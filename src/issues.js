@@ -111,4 +111,18 @@ export default class JiraIssues {
 			});
 		});
 	}
+
+	/**
+	* Get default issues summary
+	*/
+	summary() {
+		jira.api.searchJira('assignee = currentUser() and resolution = Unresolved').then(function( r ){
+			
+			if( r.total ){
+				r.issues.forEach(function( issue ){
+					console.log( '	' + color.green(color.blue( issue.key ) + '	' +  issue.fields.status.name )  + '	' + issue.fields.summary );
+				});
+			}
+		});
+	}
 }

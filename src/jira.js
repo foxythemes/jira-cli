@@ -90,6 +90,13 @@ class JiraCLI {
 	}
 
 	/**
+	* Default command handler
+	*/
+	cmdDefault( cli ) {
+		cli.outputHelp();
+	}
+
+	/**
 	* Create command
 	*/
 	cmdCreate( cmd, options ) {
@@ -103,6 +110,18 @@ class JiraCLI {
 
 		if ( typeof cmd === 'undefined' ){
 			this.projects.list();
+		} else {
+			// Commands go here
+		}
+	}
+
+	/**
+	* Issues
+	*/
+	cmdIssue( cmd, options ) {
+
+		if ( typeof cmd === 'undefined' ){
+			this.issues.summary();
 		} else {
 			// Commands go here
 		}
