@@ -11,6 +11,7 @@ import color from 'chalk';
 import Config from './config';
 import Issues from './issues';
 import Projects from './projects';
+import Versions from './versions';
 
 // Singleton instance
 let instance = null;
@@ -26,6 +27,7 @@ class JiraCLI {
 		this.config = new Config;
 		this.issues = new Issues;
 		this.projects = new Projects;
+		this.versions = new Versions;
 
 		if( !instance ){
       instance = this;
@@ -62,12 +64,19 @@ class JiraCLI {
 	*/
 	showErrors( response ){
 		let errors = response.error.errors;
+		let messages = response.error.errorMessages;
   	
   	console.log('');
 
-		for (var key in errors) {
-		  console.log( color.red( 'Error: ' + errors[key] ) );
-		}
+  	if ( messages.length ) {
+  		for (var key in messages) {
+			  console.log( color.red( 'Error: ' + messages[key] ) );
+			}
+  	} else {
+			for (var key in errors) {
+			  console.log( color.red( 'Error: ' + errors[key] ) );
+			}
+  	}
 
 		console.log('');
 	}
@@ -112,6 +121,17 @@ class JiraCLI {
 			this.projects.list();
 		} else {
 			// Commands go here
+		}
+	}
+
+
+	/**
+	* Versions
+	*/
+	cmdVersion( args, options ) {
+
+		if ( process.argv.slice(3).length ){
+			this.versions.listVersions( args );
 		}
 	}
 

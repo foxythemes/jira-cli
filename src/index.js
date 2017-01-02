@@ -70,6 +70,19 @@ jira.init().then(function(){
 
 
 	/**
+	 * Versions
+	 */
+
+	cl
+	  .command('version <project>')
+	  .description('Get project versions')
+	  .alias('v')
+	  .action((c, o) => {
+	  	jira.cmdVersion(c, o);
+	  });
+
+
+	/**
 	 * Show help if executes with no arguments
 	 */
 
