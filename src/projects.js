@@ -1,8 +1,9 @@
 // Packages
 import inquirer from 'inquirer';
 import color from 'chalk';
+import Table from 'cli-table2';
 
-// Local
+// Local11
 import jira from './jira';
 
 export default class JiraProjects {
@@ -35,9 +36,21 @@ export default class JiraProjects {
 	async list() {
 		const projects = await this.loadProjects();
 
-		projects.forEach(function ( project ) {
-		  console.log( '  ' + color.blue( project.key ) + ' - ' + project.name );
+		const table = new Table({
+			chars: { 'top': ' ' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
+         , 'bottom': ' ' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
+         , 'left': ' ' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+         , 'right': '' , 'right-mid': '' , 'middle': ' ' },
+		  head: ['Key', 'Name']
 		});
+
+		projects.forEach(function ( project ) {
+		  table.push(
+  			[ color.blue( project.key ), project.name ]
+			);
+		});
+
+		console.log( table.toString() );
 	}
 
 	/**

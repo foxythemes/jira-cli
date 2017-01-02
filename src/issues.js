@@ -120,7 +120,7 @@ export default class JiraIssues {
 		const table = new Table({
 			chars: { 'top': ' ' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
          , 'bottom': ' ' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
-         , 'left': '' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+         , 'left': ' ' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
          , 'right': '' , 'right-mid': '' , 'middle': ' ' },
 		  head: ['Key', 'Status', 'Summary']
 		});
