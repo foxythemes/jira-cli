@@ -93,7 +93,7 @@ class JiraCLI {
 	* Default command handler
 	*/
 	cmdDefault( cli ) {
-		cli.outputHelp();
+		//cli.outputHelp();
 	}
 
 	/**
@@ -118,12 +118,14 @@ class JiraCLI {
 	/**
 	* Issues
 	*/
-	cmdIssue( cmd, options ) {
+	cmdIssue( args, options ) {
 
-		if ( typeof cmd === 'undefined' ){
+		if ( !process.argv.slice(3).length ){
 			this.issues.summary();
 		} else {
-			// Commands go here
+			if ( options.version && options.project ) {
+				this.issues.getReleaseIssues( options );
+			}	
 		}
 	}
 }

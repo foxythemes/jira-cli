@@ -114,23 +114,48 @@ export default class JiraIssues {
 	}
 
 	/**
+	* Show issues in a table format
+	*/
+	showIssues( issues ) {
+		const table = new Table({
+			chars: { 'top': ' ' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
+         , 'bottom': ' ' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
+         , 'left': '' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+         , 'right': '' , 'right-mid': '' , 'middle': ' ' },
+		  head: ['Key', 'Status', 'Summary']
+		});
+
+		issues.forEach(function( issue ){
+			table.push(
+  			[color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
+			);
+		});
+
+		console.log( table.toString() );
+	}
+
+	/**
 	* Get default issues summary
 	*/
 	summary() {
+		const _this = this;
+
 		jira.api.searchJira('assignee = currentUser() and resolution = Unresolved').then(function( r ){
 
 			if( r.total ){
-				var table = new Table({
-				  head: ['Key', 'Status', 'Summary']
-				});
+				_this.showIssues( r.issues );
+			}
+		});
+	}
 
-				r.issues.forEach(function( issue ){
-					table.push(
-	    			[color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
-	  			);
-				});
-
-				console.log( table.toString() );
+	/**
+	* Get release issues
+	*/
+	getReleaseIssues( options ) {
+		const _this = this;
+		jira.api.searchJira('project = ' + options.project + ' and fixVersion = ' + options.version ).then(function( r ){
+			if( r.total ){
+				_this.showIssues( r.issues );
 			}
 		});
 	}
