@@ -15,12 +15,17 @@ When running the first time (or if you didn't create a config file), it will ask
 There is only one main command `create` if no command is provided help is shown:
 
 ```
-   Usage:  [options] [command]
+  Usage:  [options] [command]
 
 
   Commands:
 
-    create [options]  Create a new issue
+    create [options] [options]     Create a new issue
+    open|o [options]               Open issues in browser
+    config [options] [command]     Configuration file options
+    issue|i [options] [command]    Issue commands
+    project|p [options] [command]  Project commands
+    version|v <project>            Get project versions
 
   Options:
 
