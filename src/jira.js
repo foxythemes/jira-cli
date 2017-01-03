@@ -29,6 +29,12 @@ class JiraCLI {
 		this.projects = new Projects;
 		this.versions = new Versions;
 
+		// This is for cli-table defaults
+		this.tableChars = { 'top': ' ' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
+         , 'bottom': ' ' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
+         , 'left': ' ' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+         , 'right': '' , 'right-mid': '' , 'middle': ' ' };
+
 		if( !instance ){
       instance = this;
     }
@@ -63,20 +69,25 @@ class JiraCLI {
 	* Show errors from api response
 	*/
 	showErrors( response ){
-		let errors = response.error.errors;
-		let messages = response.error.errorMessages;
-  	
   	console.log('');
 
-  	if ( messages.length ) {
-  		for (var key in messages) {
-			  console.log( color.red( '  Error: ' + messages[key] ) );
-			}
-  	} else {
-			for (var key in errors) {
-			  console.log( color.red( '  Error: ' + errors[key] ) );
-			}
-  	}
+		if ( typeof response.eror !== 'undefined' ) {
+			let errors = response.error.errors;
+			let messages = response.error.errorMessages;
+	  	
+
+	  	if ( messages.length ) {
+	  		for (var key in messages) {
+				  console.log( color.red( '  Error: ' + messages[key] ) );
+				}
+	  	} else {
+				for (var key in errors) {
+				  console.log( color.red( '  Error: ' + errors[key] ) );
+				}
+	  	}
+		} else {
+			console.log( '  ' + color.red( response ) );
+		}
 
 		console.log('');
 	}
@@ -158,6 +169,8 @@ class JiraCLI {
 				this.issues.getReleaseIssues( options );
 			} else if ( !options.project && options.release ) {
 				this.showError( 'You must specify a project (Use project option: -p <Project Key>)' );
+			} else {
+				this.issues.findIssue( args );
 			}
 		}
 	}

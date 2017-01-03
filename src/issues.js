@@ -2,6 +2,7 @@
 import inquirer from 'inquirer';
 import color from 'chalk';
 import Table from 'cli-table2';
+import moment from 'moment';
 
 // Local
 import jira from './jira';
@@ -135,6 +136,75 @@ export default class JiraIssues {
 	}
 
 	/**
+	* Show issue detail in pretty format
+	*/
+	showIssue( issue ) {
+		const table = new Table({ chars: jira.tableChars });
+		const detailTable = new Table({ chars: jira.tableChars });
+		let status;
+
+		// Set status format
+		switch( issue.fields.status.name ) {
+			case 'Done':
+				status = color.green( 'Done' );
+			break;			
+
+			case 'In Progress':
+				status = color.yellow( 'In Progress' );
+			break;
+
+			case 'To Do':
+				status = color.blue( 'To Do' );
+			break;
+
+			default:
+				status = issue.fields.resolution.name;
+			break;
+		}
+
+		table.push(
+		    { 'Summary': issue.fields.summary.trim() }
+		  , { 'Status': status }
+		  , { 'Type': issue.fields.issuetype.name }
+		  , { 'Project': issue.fields.project.name + ' (' + issue.fields.project.key + ')' }
+		  , { 'Reporter': issue.fields.reporter.name });
+
+		// If issue has assignee
+		if( issue.fields.assignee != null ) {
+			table.push( { 'Assignee': issue.fields.assignee.name } );
+		}
+
+		table.push(
+		  { 'Priority': issue.fields.priority.name }
+		);
+
+		// Start with detail table
+		table.push(
+		  	{ '': '' }
+		  , { 'Id': issue.id }
+		  ,	{ 'Created on': moment( issue.fields.created ).format('MMMM Do YYYY, h:mm:ss a') }
+		  , { 'Updated on': moment( issue.fields.updated ).format('MMMM Do YYYY, h:mm:ss a') }
+		);
+
+		// Fixes versions
+		if ( issue.fields.fixVersions.length ) {
+			let versions = [];
+			issue.fields.fixVersions.forEach(function( version ){
+				versions.push( version.name );
+			});
+
+			table.push( { 'Fix Versions:': versions.join( ', ' ) } );
+		}
+
+		// If issue has resolution
+		if( issue.fields.resolution != null ) {
+			table.push( { 'Resolution': issue.fields.resolution.name } );
+		}
+
+		console.log( table.toString() );
+	}
+
+	/**
 	* Get default issues summary
 	*/
 	summary() {
@@ -157,6 +227,17 @@ export default class JiraIssues {
 			if( r.total ){
 				_this.showIssues( r.issues );
 			}
+		}).catch(function( res ){
+			this.showErrors( res );
+			process.exit();
+		});
+	}
+
+	findIssue( issue ) {
+		const _this = this;
+
+		jira.api.findIssue( issue ).then(function( r ){
+			_this.showIssue( r );
 		}).catch(function( res ){
 			jira.showErrors( res );
 			process.exit();
