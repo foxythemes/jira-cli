@@ -71,7 +71,7 @@ class JiraCLI {
 	showErrors( response ){
   	console.log('');
 
-		if ( typeof response.eror !== 'undefined' ) {
+		if ( typeof response.error !== 'undefined' ) {
 			let errors = response.error.errors;
 			let messages = response.error.errorMessages;
 	  	
