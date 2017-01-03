@@ -62,6 +62,7 @@ jira.init().then(function(){
 	  .alias('i')
 	  .option("-r, --release <version>", "Get the given release issues")
 	  .option("-p, --project <projectKey>", "Set the current project")
+	  .option("-u, --user <username>", "Set the user name")
 	  .option("-h, --help", "")
 	  .action((c, o) => {
 	  	jira.cmdIssue(c, o);

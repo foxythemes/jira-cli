@@ -223,13 +223,24 @@ export default class JiraIssues {
 	/**
 	* Get default issues summary
 	*/
-	summary() {
+	summary( user ) {
 		const _this = this;
+		let jql;
 
-		jira.api.searchJira('assignee = currentUser() and resolution = Unresolved').then(function( r ){
+		if ( user ) {
+			jql = 'assignee = ' + user + ' and resolution = Unresolved';
+		} else {
+			jql = 'assignee = currentUser() and resolution = Unresolved';
+		}
 
-			if( r.total ){
-				_this.showIssues( r.issues );
+		jira.api.searchJira( jql ).then(function( r ){
+
+			if ( typeof r.warningMessages !== 'undefined' ) {
+				jira.showErrors( r );
+			} else {
+				if( r.total ){
+					_this.showIssues( r.issues );
+				}
 			}
 		});
 	}
