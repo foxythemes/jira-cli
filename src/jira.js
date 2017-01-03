@@ -70,14 +70,23 @@ class JiraCLI {
 
   	if ( messages.length ) {
   		for (var key in messages) {
-			  console.log( color.red( 'Error: ' + messages[key] ) );
+			  console.log( color.red( '  Error: ' + messages[key] ) );
 			}
   	} else {
 			for (var key in errors) {
-			  console.log( color.red( 'Error: ' + errors[key] ) );
+			  console.log( color.red( '  Error: ' + errors[key] ) );
 			}
   	}
 
+		console.log('');
+	}
+
+	/**
+	* Show error in pretty format
+	*/
+	showError( msg ) {
+		console.log('');
+		console.log( color.red( '  ' + msg ) );
 		console.log('');
 	}
 
@@ -143,9 +152,13 @@ class JiraCLI {
 		if ( !process.argv.slice(3).length ){
 			this.issues.summary();
 		} else {
-			if ( options.version && options.project ) {
+
+			// Get the release issues if options -rp are passed
+			if ( options.release && options.project ) {
 				this.issues.getReleaseIssues( options );
-			}	
+			} else if ( !options.project && options.release ) {
+				this.showError( 'You must specify a project (Use project option: -p <Project Key>)' );
+			}
 		}
 	}
 }

@@ -12,25 +12,30 @@ export default class JiraVersions {
 	* Show versions
 	*/
 	showVersions ( versions ) {
-		const table = new Table({
-			chars: { 'top': ' ' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
-         , 'bottom': ' ' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
-         , 'left': ' ' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
-         , 'right': '' , 'right-mid': '' , 'middle': ' ' },
-		  head: ['Name', 'Status', 'Release Date']
-		});
 
-		versions.forEach(function( version ){
-			const name = version.name;
-			const released = version.released ? color.green( 'Released' ) : color.red( 'Unreleased' );
-			const releaseDate = version.releaseDate ? version.releaseDate : '';
+		if ( versions.length ) {
+			const table = new Table({
+				chars: { 'top': ' ' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
+	         , 'bottom': ' ' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
+	         , 'left': ' ' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+	         , 'right': '' , 'right-mid': '' , 'middle': ' ' },
+			  head: ['Name', 'Status', 'Release Date']
+			});
 
-			table.push(
-  			[ name, released, releaseDate ]
-			);
-		});
+			versions.forEach(function( version ){
+				const name = version.name;
+				const released = version.released ? color.green( 'Released' ) : color.red( 'Unreleased' );
+				const releaseDate = version.releaseDate ? version.releaseDate : '';
 
-		console.log( table.toString() );
+				table.push(
+	  			[ name, released, releaseDate ]
+				);
+			});
+
+			console.log( table.toString() );
+		} else {
+			jira.showError( 'There are no releases for this project' );
+		}
 	}
 
 	/**

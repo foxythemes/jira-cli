@@ -153,10 +153,13 @@ export default class JiraIssues {
 	*/
 	getReleaseIssues( options ) {
 		const _this = this;
-		jira.api.searchJira('project = ' + options.project + ' and fixVersion = ' + options.version ).then(function( r ){
+		jira.api.searchJira('project = ' + options.project + ' and fixVersion = ' + options.release ).then(function( r ){
 			if( r.total ){
 				_this.showIssues( r.issues );
 			}
+		}).catch(function( res ){
+			jira.showErrors( res );
+			process.exit();
 		});
 	}
 }
