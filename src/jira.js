@@ -126,10 +126,20 @@ class JiraCLI {
 	}
 
 	/**
-	* Create command
+	* Create
 	*/
 	cmdCreate( cmd, options ) {
 		this.issues.create( options );
+	}
+
+	/**
+	* Open
+	*/
+	cmdOpen( args, options ) {
+
+		if ( process.argv.slice(3).length ){
+			this.issues.openIssue( args );
+		}
 	}
 
 	/**

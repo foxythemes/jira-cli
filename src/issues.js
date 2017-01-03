@@ -3,6 +3,7 @@ import inquirer from 'inquirer';
 import color from 'chalk';
 import Table from 'cli-table2';
 import moment from 'moment';
+import opn from 'opn';
 
 // Local
 import jira from './jira';
@@ -111,6 +112,21 @@ export default class JiraIssues {
 					  });
 				});
 			});
+		});
+	}
+
+	/**
+	* Open issue in default browser
+	*/
+	openIssue( issue ) {
+		const _this = this;
+		let config = jira.config.defaults;
+
+		jira.api.findIssue( issue ).then(function(){
+			opn( config.protocol + '://' + config.host + '/browse/' + issue );
+		}).catch(function( res ){
+			jira.showErrors( res );
+			process.exit();
 		});
 	}
 

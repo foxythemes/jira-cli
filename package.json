@@ -28,7 +28,8 @@
     "commander": "^2.9.0",
     "inquirer": "^1.2.3",
     "jira-client": "^4.2.0",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "opn": "^4.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

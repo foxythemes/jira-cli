@@ -27,6 +27,19 @@ jira.init().then(function(){
 
 
 	/**
+	 * Open in browser
+	 */
+
+	cl
+	  .command('open [options]')
+	  .description('Open issues in browser')
+	  .alias('o')
+	  .action((c, o) => {
+	  	jira.cmdOpen(c, o);
+	  });
+
+
+	/**
 	 * Configuration
 	 */
 
