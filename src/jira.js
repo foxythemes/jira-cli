@@ -11,6 +11,7 @@ import color from 'chalk';
 import Config from './config';
 import Issues from './issues';
 import Projects from './projects';
+import Users from './users';
 import Versions from './versions';
 
 // Singleton instance
@@ -27,6 +28,7 @@ class JiraCLI {
 		this.config = new Config;
 		this.issues = new Issues;
 		this.projects = new Projects;
+		this.users = new Users;
 		this.versions = new Versions;
 
 		// This is for cli-table defaults
@@ -160,6 +162,17 @@ class JiraCLI {
 		}
 	}
 
+	/**
+	* Users
+	*/
+	cmdUser( cmd, options ) {
+
+		if ( typeof cmd === 'undefined' ){
+			this.users.listUsers();
+		} else {
+			// Commands go here
+		}
+	}
 
 	/**
 	* Versions

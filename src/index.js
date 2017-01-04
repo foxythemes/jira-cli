@@ -84,6 +84,20 @@ jira.init().then(function(){
 
 
 	/**
+	 * Users
+	 */
+
+	cl
+	  .command('user [command]')
+	  .description('User commands')
+	  .alias('u')
+	  .option("-h, --help", "")
+	  .action((c, o) => {
+	  	jira.cmdUser(c, o);
+	  });
+
+
+	/**
 	 * Versions
 	 */
 
