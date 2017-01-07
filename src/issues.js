@@ -257,6 +257,9 @@ export default class JiraIssues {
 		});
 	}
 
+	/**
+	* Find specific issue
+	*/
 	findIssue( issue ) {
 		const _this = this;
 
@@ -265,6 +268,25 @@ export default class JiraIssues {
 		}).catch(function( res ){
 			jira.showErrors( res );
 			process.exit();
+		});
+	}
+
+	/**
+	* Assign issue to user
+	*/
+	assignIssue( issue, user ) {
+		jira.apiRequest(`/issue/${issue}/assignee`,{
+			method: 'PUT',
+			followAllRedirects: true,
+			body: {
+				name: user
+			}
+		}).then(function(){
+			console.log();
+			console.log( color.green(`  Issue ${issue} successfully assigned to ${user}`) );
+			console.log();
+		}).catch(function( res ){
+			jira.showErrors( res );
 		});
 	}
 }

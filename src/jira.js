@@ -61,10 +61,10 @@ class JiraCLI {
 	/**
 	* Make a jira API request
 	*/
-	apiRequest( path ) {
+	apiRequest( path, options = {} ) {
 		return this.api.doRequest(this.api.makeRequestHeader(this.api.makeUri({
 			pathname: path,
-		})));
+		}), options ));
 	}
 
 	/**
@@ -189,22 +189,40 @@ class JiraCLI {
 	*/
 	cmdIssue( args, options ) {
 
-		if ( !process.argv.slice(3).length ){
-			this.issues.summary( false );
-		} else {
+		// If no arguments(issues) are passed
+		if ( !process.argv.slice(3).length || typeof args === 'undefined'){
 
-			// Get the release issues if options -rp are passed
-			if ( options.release && options.project ) {
-				this.issues.getReleaseIssues( options );
-			} else if ( !options.project && options.release ) {
-				this.showError( 'You must specify a project (Use project option: -p <Project Key>)' );
+			// Get the release issues if --release option is passed
+			if ( options.release ) {
+
+				if ( options.project ) {
+					this.issues.getReleaseIssues( options );
+				} else {
+					console.log( args );
+					this.showError( 'You must specify a project (Use project option: -p <Project Key>)' );
+				}
+
+			} else if ( options.user ) {
+				
+				// Show user summary if user option is passed
+				this.issues.summary( options.user );
+
 			} else {
 
-				if( options.user ) {
-					this.issues.summary( options.user );
-				} else {
-					this.issues.findIssue( args );
-				}
+				// Show user open issues if no arguments/options are passed 
+				this.issues.summary( false );
+			}
+
+		} else {
+
+			if ( options.assign ) {
+
+				// Assign issue to a user
+				this.issues.assignIssue( args, options.assign );
+			} else {
+
+				// If none of the above options is passed then search for specific issue
+				this.issues.findIssue( args );
 			}
 		}
 	}
