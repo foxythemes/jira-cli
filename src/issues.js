@@ -171,7 +171,7 @@ export default class JiraIssues {
 			break;
 
 			default:
-				status = issue.fields.resolution.name;
+				status = issue.fields.status.name;
 			break;
 		}
 
