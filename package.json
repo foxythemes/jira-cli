@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
-    "dev": "watch 'npm run build' src",
+    "dev": "watch \"npm run build\" src",
     "lint": "eslint ./",
     "test": "npm run lint -s",
     "prepublish": "npm run build"

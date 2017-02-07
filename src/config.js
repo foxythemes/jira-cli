@@ -1,6 +1,7 @@
 // Native
 import path from 'path';
 import fs from 'fs-promise';
+import os from 'os';
 
 // Packages
 import inquirer from 'inquirer';
@@ -13,7 +14,7 @@ export default class Config {
 	* Init config file
 	*/
 	async init( fileName ) {
-		this.filePath = path.join(process.env.HOME, fileName);
+		this.filePath = path.join(os.homedir(), fileName);
 		const filePath = this.filePath;
 
 		// If file doesn't exist then create it
