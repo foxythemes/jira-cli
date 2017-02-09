@@ -289,4 +289,19 @@ export default class JiraIssues {
 			jira.showErrors( res );
 		});
 	}
+
+	/**
+	* Get project issues
+	*/
+	getProjectIssues( project ) {
+		const _this = this;
+		jira.api.searchJira( 'project = ' + project + ' and resolution = Unresolved').then(function( r ){
+			if( r.total ){
+				_this.showIssues( r.issues );
+			}
+		}).catch(function( res ){
+			this.showErrors( res );
+			process.exit();
+		});
+	}
 }

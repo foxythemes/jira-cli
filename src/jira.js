@@ -198,7 +198,6 @@ class JiraCLI {
 				if ( options.project ) {
 					this.issues.getReleaseIssues( options );
 				} else {
-					console.log( args );
 					this.showError( 'You must specify a project (Use project option: -p <Project Key>)' );
 				}
 
@@ -206,6 +205,11 @@ class JiraCLI {
 				
 				// Show user summary if user option is passed
 				this.issues.summary( options.user );
+
+			} else if ( options.project ) {
+
+				// Show project issues
+				this.issues.getProjectIssues( options.project );
 
 			} else {
 
