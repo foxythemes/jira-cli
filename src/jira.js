@@ -141,6 +141,13 @@ class JiraCLI {
 	}
 
 	/**
+	* Search
+	*/
+	cmdSearch( args ){
+		this.issues.search( args );
+	}
+
+	/**
 	* Open
 	*/
 	cmdOpen( args, options ) {

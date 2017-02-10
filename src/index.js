@@ -38,6 +38,18 @@ jira.init().then(function(){
 	  	jira.cmdOpen(c, o);
 	  });
 
+	/**
+	 * Search Issues
+	 */
+
+	cl
+	  .command('search [search terms]')
+	  .description('Search Issues')
+	  .alias('s')
+	  .action((c, o) => {
+	  	jira.cmdSearch(c, o);
+	  });
+
 
 	/**
 	 * Configuration

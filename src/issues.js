@@ -116,6 +116,24 @@ export default class JiraIssues {
 	}
 
 	/**
+	* Search issues 
+	*/
+	search ( args ) {
+		const _this = this;
+		jira.api.searchJira( "summary ~ '" + args + "'" ).then(function( r ){
+			if( r.total ){
+				_this.showIssues( r.issues );
+				console.log( color.bold( "  Total issues found: " + color.green( r.total ) ) );
+			} else {
+				jira.showError( "No issues found with search terms: '" + args + "'" );
+			}
+		}).catch(function( res ){
+			jira.showErrors( res );
+			process.exit();
+		});
+	}
+
+	/**
 	* Open issue in default browser
 	*/
 	openIssue( issue ) {
@@ -252,7 +270,7 @@ export default class JiraIssues {
 				_this.showIssues( r.issues );
 			}
 		}).catch(function( res ){
-			this.showErrors( res );
+			jira.showErrors( res );
 			process.exit();
 		});
 	}
@@ -300,7 +318,7 @@ export default class JiraIssues {
 				_this.showIssues( r.issues );
 			}
 		}).catch(function( res ){
-			this.showErrors( res );
+			jira.showErrors( res );
 			process.exit();
 		});
 	}
