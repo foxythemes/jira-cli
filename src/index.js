@@ -115,9 +115,11 @@ jira.init().then(function(){
 	 */
 
 	cl
-	  .command('version <project>')
-	  .description('Get project versions')
+	  .command('version [command]')
+	  .description('Versions command')
 	  .alias('v')
+	  .option("-n, --number <version>", "Set the version number")
+	  // Get project versions
 	  .action((c, o) => {
 	  	jira.cmdVersion(c, o);
 	  });

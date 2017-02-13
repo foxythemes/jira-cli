@@ -24,7 +24,7 @@ export default class JiraVersions {
 				const releaseDate = version.releaseDate ? version.releaseDate : '';
 
 				table.push(
-	  			[ name, released, releaseDate ]
+				[ name, released, releaseDate ]
 				);
 			});
 
@@ -54,5 +54,26 @@ export default class JiraVersions {
 		const versions = await this.getVersions( project );
 
 		this.showVersions( versions );
+	}
+
+	/**
+	* Create Versions
+	*/
+	async createVersion ( project, version ) {
+
+		const object = {
+			name: version,
+			project: project
+		}; 
+
+		return jira.api.createVersion( object )
+		.then(function( res ){
+			console.log('');
+			console.log('New version (' + color.bold.green( version ) + ') in project ' + color.bold( project ) + ' was created.');
+			console.log('');
+		})
+		.catch(function( res ){
+			jira.showErrors( res );
+		});
 	}
 }

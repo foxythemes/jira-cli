@@ -186,8 +186,13 @@ class JiraCLI {
 	*/
 	cmdVersion( args, options ) {
 
-		if ( process.argv.slice(3).length ){
-			this.versions.listVersions( args );
+		if ( process.argv.slice(3).length ) {
+			// If number option is passed create a new version
+			if ( options.number ) {
+				this.versions.createVersion( args, options.number );
+			} else {
+				this.versions.listVersions( args );
+			}
 		}
 	}
 
@@ -197,7 +202,7 @@ class JiraCLI {
 	cmdIssue( args, options ) {
 
 		// If no arguments(issues) are passed
-		if ( !process.argv.slice(3).length || typeof args === 'undefined'){
+		if ( !process.argv.slice(3).length || typeof args === 'undefined' ){
 
 			// Get the release issues if --release option is passed
 			if ( options.release ) {
