@@ -32,12 +32,12 @@ export default class JiraIssues {
 
 			// Populate projects, keys and their respective issue types
 			for ( var index in meta.projects ){
-	  		projects.push(meta.projects[index].name);
-	  		keys.push(meta.projects[index].key);
-	  		issueTypes.push(meta.projects[index].issuetypes);
-	  	}
+		  		projects.push(meta.projects[index].name);
+		  		keys.push(meta.projects[index].key);
+		  		issueTypes.push(meta.projects[index].issuetypes);
+		  	}
 
-	  	// Create the project question
+	  		// Create the project question
 			var project = [
 			  {
 			    type: 'list',
@@ -96,20 +96,20 @@ export default class JiraIssues {
 			    	newIssue.fields.assignee = { name: 'miguelmich' };
 			    }
 
-					// Create new issue
-					jira.api.addNewIssue( newIssue )
-					  .then(function( issue ) {
+				// Create new issue
+				jira.api.addNewIssue( newIssue )
+				  .then(function( issue ) {
 
-					  	let config = jira.config.defaults;
+				  	let config = jira.config.defaults;
 
-					  	console.log('');
-					    console.log('New issue: ' + color.bold.red(issue.key));
-					    console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
-					    console.log('');
-					  })
-					  .catch(function( res ) {
-					  	jira.showErrors( res );
-					  });
+				  	console.log('');
+				    	console.log('New issue: ' + color.bold.red(issue.key));
+				    	console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
+				    	console.log('');
+				  	})
+				  	.catch(function( res ) {
+				  		jira.showErrors( res );
+				  	});
 				});
 			});
 		});
@@ -321,5 +321,94 @@ export default class JiraIssues {
 			jira.showErrors( res );
 			process.exit();
 		});
+	}
+
+	/**
+	* Get issue transitions
+	*/
+	async getIssueTransitions( issueId ) {
+		return jira.api.listTransitions( issueId )
+		  .then(function( res ) {
+		  	let transitions = [];
+		  	const transitionObj = res.transitions;
+
+		  	for (var index in transitionObj){
+		  		transitions.push({
+		  			id: transitionObj[index].id,
+		  			name: transitionObj[index].name,
+		  			to: transitionObj[index].to.name
+		  		});
+		  	}
+
+		  	return transitions;
+		  })
+		  .catch(function(err) {
+		  		jira.showErrors(err);
+		  });
+	}
+
+	/**
+	* API issue transition
+	*/
+	transitionIssue( issueId, transitionObj ){	
+
+		return jira.api.transitionIssue( issueId, transitionObj )
+		.then( function(res){
+			console.log();
+			console.log( '  Issue [' + issueId + '] moved to ' + color.green.bold(transitionObj.to) + '.' );
+			console.log();
+		})
+		.catch( function (res){
+			jira.showErrors(res);
+		});
+	}
+
+	/**
+	* Make issue transition
+	*/
+	async makeTransition( issueId ){
+
+		const transitions = await this.getIssueTransitions(issueId);
+		const _this = this;
+
+		if ( transitions.length == 1 ) {
+
+			const obj = {
+					transition: {
+						id: transitions[0].id
+					},
+					to: transitions[0].to
+				};
+
+			return this.transitionIssue( issueId, obj );
+
+		} else {
+
+			var question = [
+			  	{
+				   type: 'list',
+				   name: 'transition',
+				   message: 'Transitions: ',
+				   choices: transitions,
+			    	filter: function(val){
+				    	return transitions.find(function(obj){
+				    		return obj.name == val;
+				    	});
+			    	}
+			  	}
+			];
+
+			inquirer.prompt(question).then(function( res ) {
+
+				const obj = {
+					transition: {
+						id: res.transition.id
+					},
+					to: res.transition.to
+				};
+
+				return _this.transitionIssue( issueId, obj );
+			});
+		}
 	}
 }
