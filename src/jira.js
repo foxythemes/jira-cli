@@ -137,7 +137,7 @@ class JiraCLI {
 	* Create
 	*/
 	cmdCreate( cmd, options ) {
-		this.issues.create( options );
+		this.issues.createIssueObj( options );
 	}
 
 	/**

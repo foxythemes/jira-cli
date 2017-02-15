@@ -21,9 +21,32 @@ export default class JiraIssues {
 	* Crate a new issue 
 	* Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
 	*/
-	create( options ) {
+	createIssue( newIssue) {
+		// Create new issue
+		jira.api.addNewIssue( newIssue )
+	  	.then(function( issue ) {
+
+	  		let config = jira.config.defaults;
+
+	  		console.log('');
+	    	console.log('New issue: ' + color.bold.red(issue.key));
+	    	console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
+	    	console.log('');
+	  	})
+	  	.catch(function( res ) {
+	  		jira.showErrors( res );
+	  	});
+	}
+
+	/**
+	* Crate a new issue object
+	* Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
+	*/
+	createIssueObj( options ) {
+
+		const _this = this;
 		
-		this.getMetaData().then(function(meta){
+		this.getMetaData().then(function( meta ){
 
 			var projects = []; 
 			var keys = [];
@@ -44,28 +67,37 @@ export default class JiraIssues {
 			    name: 'project',
 			    message: 'Project: ',
 			    choices: projects,
-			    filter: function(val){
-			    	selectedProject = projects.indexOf(val);
+			    filter: function( val ){
+			    	selectedProject = projects.indexOf( val );
 			    	return keys[selectedProject];
 			    }
 			  }
 			];
 
-			inquirer.prompt(project).then(function (answers1) {
+			inquirer.prompt( project ).then(function( answers1 ){
 
 				var projectIssueTypes = [];
-
+				
 				// Get issue types of the selected project
 				for ( var i in issueTypes[selectedProject] ){
-		  		projectIssueTypes.push(issueTypes[selectedProject][i].name);
-		  	}
+			  		projectIssueTypes.push({
+			  			id: issueTypes[selectedProject][i].id,
+			  			name: issueTypes[selectedProject][i].name,
+			  			subtask: issueTypes[selectedProject][i].subtask
+			  		});
+			  	}
 
 				var questions = [
 				  {
 				    type: 'list',
 				    name: 'issueType',
 				    message: 'Issue type: ',
-				    choices: projectIssueTypes
+				    choices: projectIssueTypes,
+				    filter: function( val ){
+				    	return projectIssueTypes.find(function( obj ){
+				    		return obj.name == val;
+				    	});
+				    }
 				  },
 				  {
 				  	type: 'input',
@@ -76,7 +108,7 @@ export default class JiraIssues {
 				];
 
 				// Ask for the issue name and type
-				inquirer.prompt(questions).then(function (answers2) {
+				inquirer.prompt( questions ).then(function( answers2 ){
 
 					// Create the issue object
 					var newIssue = {
@@ -86,30 +118,34 @@ export default class JiraIssues {
 							},
 							summary: answers2.issueName,
 							issuetype: {
-							  name: answers2.issueType
+							  id: answers2.issueType.id
 							}
 						}
 					};
 			    
-			    // Assign the issue to the current user if self option is passed
-			    if(  typeof options.self !== 'undefined' ) {
-			    	newIssue.fields.assignee = { name: 'miguelmich' };
-			    }
+			    	// Assign the issue to the current user if self option is passed
+			    	if(  typeof options.self !== 'undefined' ) {
+			    		newIssue.fields.assignee = { name: jira.config.defaults.username };
+			    	}
 
-				// Create new issue
-				jira.api.addNewIssue( newIssue )
-				  .then(function( issue ) {
+			    	if( answers2.issueType.subtask ){
+			    		var question = [
+			    			{ 
+			    				type: 'input',
+						  		name: 'issueParentName',
+						  		message: 'Please provide the parent issue key:'
+			    			}
+			    		];
 
-				  	let config = jira.config.defaults;
-
-				  	console.log('');
-				    	console.log('New issue: ' + color.bold.red(issue.key));
-				    	console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
-				    	console.log('');
-				  	})
-				  	.catch(function( res ) {
-				  		jira.showErrors( res );
-				  	});
+			    		inquirer.prompt( question ).then(function( answers3 ){
+			    			newIssue.fields.parent = {
+			    				key: answers3.issueParentName
+			    			};
+			    			_this.createIssue( newIssue );
+		    			});
+			    	} else {
+			    		_this.createIssue( newIssue );
+			    	}
 				});
 			});
 		});
