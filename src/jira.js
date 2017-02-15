@@ -71,30 +71,35 @@ class JiraCLI {
 	* Show errors from api response
 	*/
 	showErrors( response ){
-  	console.log('');
+  		console.log('');
 
-		if ( typeof response.error !== 'undefined' ) {
-			let errors = response.error.errors;
-			let messages = response.error.errorMessages;
-	  	
-
-	  	if ( messages.length ) {
-	  		for (var key in messages) {
-				  console.log( color.red( '  Error: ' + messages[key] ) );
-				}
-	  	} else {
-				for (var key in errors) {
-				  console.log( color.red( '  Error: ' + errors[key] ) );
-				}
-	  	}
-	  } else if ( typeof response.warningMessages !== 'undefined' ) {
-	  	let warnings = response.warningMessages;
-
-	  	warnings.forEach(( warning ) => {
-	  		console.log( color.yellow(' Warning: ' + warning ) );
-	  	});
+		if ( response.statusCode == '401' ) {
+			console.log( color.red( '  Error trying to authenticate' ) );
 		} else {
-			console.log( '  ' + color.red( response ) );
+
+			if ( typeof response.error !== 'undefined' ) {
+				let errors = response.error.errors;
+				let messages = response.error.errorMessages;
+		  	
+
+			  	if ( messages.length ) {
+			  		for (var key in messages) {
+					  	console.log( color.red( '  Error: ' + messages[key] ) );
+					}
+			  	} else {
+					for (var key in errors) {
+					  	console.log( color.red( '  Error: ' + errors[key] ) );
+					}
+		  		}
+		  	} else if ( typeof response.warningMessages !== 'undefined' ) {
+		  		let warnings = response.warningMessages;
+
+			  	warnings.forEach(( warning ) => {
+			  		console.log( color.yellow(' Warning: ' + warning ) );
+			  	});
+			} else {
+				console.log( '  ' + color.red( response ) );
+			}
 		}
 
 		console.log('');

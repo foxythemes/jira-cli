@@ -293,6 +293,8 @@ export default class JiraIssues {
 					_this.showIssues( r.issues );
 				}
 			}
+		}).catch(function( r ){
+			jira.showErrors( r );
 		});
 	}
 
