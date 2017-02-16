@@ -106,6 +106,67 @@ export default class Config {
 	}
 
 	/**
+	* Update config file
+	*/	
+	updateConfigFile( ) {
+		const filePath = this.filePath;
+
+		fs.writeFile( filePath, JSON.stringify( this.defaults ), 'utf8' )
+		.then(function(){
+			console.log('');
+			console.log( color.green( '  Config file succesfully updated.' ) );
+			console.log('');
+		})
+		.catch(function(){
+			jira.showError( 'Error updating config file.' );
+		});
+	}
+
+	/**
+	* Update config record
+	*/	
+	updateConfigRecord( cmd, val ) {
+
+		const _this = this;
+
+		if ( cmd == 'username' ) {
+
+			if ( typeof val === 'undefined' ) {
+				console.log( '' );
+				console.log( '  Current username: ' + color.blue.bold(this.defaults.username) );
+				console.log( '' );
+			} else {
+				this.defaults.username = val;
+
+				this.updateConfigFile();
+			}
+		} else if ( cmd == 'host' ) {
+			if ( typeof val === 'undefined' ) {
+				console.log( '' );
+				console.log( '  Current host: ' + color.blue.bold(this.defaults.host) );
+				console.log( '' );
+			} else {
+				this.defaults.host = val;
+
+				this.updateConfigFile();
+			}
+		} else if ( cmd == 'password' ) {
+			var questions = [
+			  {
+			  	type: 'password',
+			  	name: 'password',
+			  	message: 'Type your jira password:'
+			  }
+			];
+
+			inquirer.prompt(questions).then(function( passwd ) {
+				_this.defaults.password = passwd.password;
+				_this.updateConfigFile();
+			});
+		}
+	}
+
+	/**
 	* Documentation
 	*/
 	docs() {

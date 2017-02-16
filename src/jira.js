@@ -120,13 +120,18 @@ class JiraCLI {
 	cmdConfig( cmd, options ) {
 
 		// If no command is provided show help
-		if ( typeof cmd === 'undefined' ){
+		if ( typeof cmd === 'undefined' ) {
 			this.config.docs();
 		} else {
 
 			// Remove config file
 			if ( cmd == 'remove' ){
 				this.config.removeConfigFile();
+			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' ){
+
+				const val = process.argv.slice(4)[0];
+
+				this.config.updateConfigRecord( cmd, val );
 			}
 		}
 	}
