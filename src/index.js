@@ -44,7 +44,7 @@ jira.init().then(function(){
 
 	cl
 	  .command('search [search terms]')
-	  .description('Search Issues')
+	  .description('Search issues')
 	  .alias('s')
 	  .action((c, o) => {
 	  	jira.cmdSearch(c, o);
