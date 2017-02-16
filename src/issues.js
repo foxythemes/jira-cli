@@ -160,6 +160,7 @@ export default class JiraIssues {
 			if( r.total ){
 				_this.showIssues( r.issues );
 				console.log( color.bold( "  Total issues found: " + color.green( r.total ) ) );
+				console.log('');
 			} else {
 				jira.showError( "No issues found with search terms: '" + args + "'" );
 			}
