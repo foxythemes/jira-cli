@@ -59,6 +59,8 @@ jira.init().then(function(){
 	  .command('config [command]')
 	  .description('Configuration file options')
 	  .option("-h, --help", "")
+	  .option("-s, --set", "Set option")
+	  .option("-r, --remove", "Remove option")
 	  .action((c, o) => {
 	  	jira.cmdConfig(c, o);
 	  });

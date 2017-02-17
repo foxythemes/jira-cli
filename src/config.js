@@ -8,6 +8,9 @@ import inquirer from 'inquirer';
 import color from 'chalk';
 
 // Local
+import jira from './jira';
+
+// Local
 export default class Config {
 
 	/**
@@ -125,9 +128,10 @@ export default class Config {
 	/**
 	* Update config record
 	*/	
-	updateConfigRecord( cmd, val ) {
+	async updateConfigRecord( cmd, val, options ) {
 
 		const _this = this;
+		const boards = await jira.boards.getBoards();
 
 		if ( cmd == 'username' ) {
 
@@ -163,6 +167,46 @@ export default class Config {
 				_this.defaults.password = passwd.password;
 				_this.updateConfigFile();
 			});
+		} else if ( cmd == 'board' ) {
+			if ( options.set ) {
+
+				var question = [
+				  	{
+					   type: 'list',
+					   name: 'board',
+					   message: 'Board: ',
+					   choices: boards,
+					   filter: function( val ){
+					   	return boards.find(function( obj ){
+					    		return obj.name == val;
+					    	});
+					   }
+				  	}
+				];
+
+				inquirer.prompt( question )
+				.then(function( res ) {
+
+					_this.defaults.defaultBoard = res.board.id;
+					_this.updateConfigFile();
+					
+				});
+			} else {
+				if ( typeof this.defaults.defaultBoard === 'undefined' ) {
+					console.log( '' );
+					console.log( color.red( '  There is no default board set.' ) );
+				} else {
+
+					if ( options.remove ) {
+						delete this.defaults.defaultBoard;
+						this.updateConfigFile();
+					} else {				
+						const defaultBoard = await jira.boards.getBoard( this.defaults.defaultBoard );
+						console.log( '' );
+						console.log( '  Your default board is: ' + color.green.bold( defaultBoard.name ) );
+					}
+				}
+			}
 		}
 	}
 

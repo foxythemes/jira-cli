@@ -1,6 +1,7 @@
 // Native
 import path from 'path';
 import fs from 'fs-promise';
+import url from 'url';
 
 // Packages
 import JiraApi from 'jira-client';
@@ -9,6 +10,7 @@ import color from 'chalk';
 
 // Local
 import Config from './config';
+import Boards from './boards';
 import Issues from './issues';
 import Projects from './projects';
 import Users from './users';
@@ -24,8 +26,9 @@ class JiraCLI {
 		// Set the config file name
 		this.configFileName = '.jira-cl.json';
 
-		// Create a new instance of configuration class
+		// Create instance of each module
 		this.config = new Config;
+		this.boards = new Boards;
 		this.issues = new Issues;
 		this.projects = new Projects;
 		this.users = new Users;
@@ -56,6 +59,29 @@ class JiraCLI {
 			// Connect  to Jira
 			_self.api = new JiraApi( r );
 		});
+	}
+
+	/**
+	* Create agile URI
+	*/
+	makeAgileUri({ pathname, query }) {
+    	const uri = url.format({
+      	protocol: this.api.protocol,
+      	hostname: this.api.host,
+      	port: this.api.port,
+      	pathname: `${this.api.base}/rest/agile/1.0${pathname}`,
+      	query,
+    	});
+    	return decodeURIComponent(uri);
+  	}
+
+	/**
+	* Make an agile request
+	*/
+	agileRequest( path, options = {} ) {
+		return this.api.doRequest(this.api.makeRequestHeader(this.makeAgileUri({
+			pathname: path,
+		}), options ));
 	}
 
 	/**
@@ -127,11 +153,11 @@ class JiraCLI {
 			// Remove config file
 			if ( cmd == 'remove' ){
 				this.config.removeConfigFile();
-			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' ){
+			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board'){
 
 				const val = process.argv.slice(4)[0];
 
-				this.config.updateConfigRecord( cmd, val );
+				this.config.updateConfigRecord( cmd, val, options );
 			}
 		}
 	}
