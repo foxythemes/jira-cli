@@ -2,7 +2,7 @@
   "name": "jira-cl",
   "version": "1.0.1",
   "description": "A Jira command line client",
-  "author": "Eduardo Henao",
+  "author": "Eduardo Henao & Miguel Henao",
   "license": "MIT",
   "repository": {
     "type": "git",

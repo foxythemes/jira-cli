@@ -36,5 +36,5 @@ There is only one main command `create` if no command is provided help is shown:
 
 ## License
 
-Copyright (c) 2016 Behuti
+Copyright (c) 2017 by Miguel Henao & Eduardo Henao
 Licensed under the MIT license.
