@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/behuti/jira-cli.git"
+    "url": "https://github.com/foxythemes/jira-cli.git"
   },
   "main": "lib/index.js",
   "files": [
