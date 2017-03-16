@@ -133,7 +133,7 @@ jira.init().then(function(){
 	 */
 
 	if (!process.argv.slice(2).length) {
-	    cl.outputHelp();
+	  cl.outputHelp();
 	}
 
 	cl.parse(process.argv);
