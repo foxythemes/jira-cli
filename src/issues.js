@@ -42,7 +42,7 @@ export default class JiraIssues {
 	* Crate a new issue object
 	* Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
 	*/
-	createIssueObj( options ) {
+	createIssueObj( options = {} ) {
 
 		const _this = this;
 		
@@ -124,7 +124,7 @@ export default class JiraIssues {
 					};
 			    
 			    	// Assign the issue to the current user if self option is passed
-			    	if(  typeof options.self !== 'undefined' ) {
+			    	if( typeof options.self !== 'undefined' ) {
 			    		newIssue.fields.assignee = { name: jira.config.defaults.username };
 			    	}
 
@@ -146,6 +146,9 @@ export default class JiraIssues {
 			    	} else {
 			    		_this.createIssue( newIssue );
 			    	}
+				}).catch((err) => { 
+					console.log(err); 
+					process.exit();
 				});
 			});
 		});
