@@ -59,17 +59,27 @@ export default class JiraVersions {
 	/**
 	* Create Versions
 	*/
-	async createVersion ( project, version ) {
+	async createVersion ( project, { number, description, startDate, releaseDate } ) {
 
-		const object = {
-			name: version,
-			project: project
-		}; 
+        let object = {
+            name: number,
+            project: project
+        }
+        if(description) {
+            object['description'] = description;
+        }
+        if(startDate) {
+            object['userStartDate'] = startDate;
+        }
+        if(releaseDate) {
+            object['userReleaseDate'] = releaseDate;
+        }
+		console.log(object);
 
 		return jira.api.createVersion( object )
 		.then(function( res ){
 			console.log('');
-			console.log('New version (' + color.bold.green( version ) + ') in project ' + color.bold( project ) + ' was created.');
+			console.log('New version (' + color.bold.green( number ) + ') in project ' + color.bold( project ) + ' was created.');
 			console.log('');
 		})
 		.catch(function( res ){
