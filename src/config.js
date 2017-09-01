@@ -220,7 +220,8 @@ export default class Config {
 		console.log('');
 		console.log('  Commands:');
 		console.log('');
-		console.log('    remove 	Remove the config file');
+		console.log('    remove			Remove the config file');
+		console.log('    switch=<config_name>	Switch to the named config');
 		console.log('');
 	}
 }
