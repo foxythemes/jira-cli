@@ -155,13 +155,13 @@ class JiraCLI {
 			if ( cmd == 'remove' ){
 				this.config.removeConfigFile();
 			} else if ( cmd == 'switch' ){
-                const val = process.argv.slice(4)[0];
-                const fileName = `.${val}${this.configFileName}`;
-                this.config.init(fileName);
-                const filePath = path.join(os.homedir(), fileName);
-                const configFilePath = path.join(os.homedir(), this.configFileName);
-                fs.unlinkSync(configFilePath);
-                fs.symlinkSync(filePath, configFilePath, 'junction');
+				const val = process.argv.slice(4)[0];
+				const fileName = `.${val}${this.configFileName}`;
+				this.config.init(fileName);
+				const filePath = path.join(os.homedir(), fileName);
+				const configFilePath = path.join(os.homedir(), this.configFileName);
+				fs.unlinkSync(configFilePath);
+				fs.symlinkSync(filePath, configFilePath, 'junction');
 			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board'){
 
 				const val = process.argv.slice(4)[0];
