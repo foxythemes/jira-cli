@@ -15,7 +15,7 @@ export default class JiraVersions {
 		if ( versions.length ) {
 			const table = new Table({
 				chars: jira.tableChars,
-			  head: ['Name', 'Status', 'Release Date']
+				head: ['Name', 'Status', 'Release Date']
 			});
 
 			versions.forEach(function( version ){
@@ -59,17 +59,29 @@ export default class JiraVersions {
 	/**
 	* Create Versions
 	*/
-	async createVersion ( project, version ) {
+	async createVersion ( project, { number, description, startDate, releaseDate } ) {
 
-		const object = {
-			name: version,
+		let object = {
+			name: number,
 			project: project
-		}; 
+		}
+
+		if(description) {
+			object['description'] = description;
+		}
+
+		if(startDate) {
+			object['userStartDate'] = startDate;
+		}
+
+		if(releaseDate) {
+			object['userReleaseDate'] = releaseDate;
+		}
 
 		return jira.api.createVersion( object )
 		.then(function( res ){
 			console.log('');
-			console.log('New version (' + color.bold.green( version ) + ') in project ' + color.bold( project ) + ' was created.');
+			console.log('New version (' + color.bold.green( number ) + ') in project ' + color.bold( project ) + ' was created.');
 			console.log('');
 		})
 		.catch(function( res ){
