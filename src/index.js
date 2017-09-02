@@ -122,9 +122,9 @@ jira.init().then(function(){
 	  .description('Versions command')
 	  .alias('v')
 	  .option("-n, --number <version>", "Set the version number")
-      .option("-d, --description <string>", "Set the description")
-      .option("-s, --start-date <string>", "Set the start date")
-      .option("-r, --release-date <string>", "Set the release date")
+    .option("-d, --description <string>", "Set the description")
+    .option("-s, --start-date <string>", "Set the start date")
+    .option("-r, --release-date <string>", "Set the release date")
 	  // Get project versions
 	  .action((c, o) => {
 	  	jira.cmdVersion(c, o);
