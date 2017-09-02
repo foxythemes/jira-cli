@@ -2,6 +2,8 @@
 
 This is a command line client Jira API, useful to create new issues.
 
+![jira-cli](https://user-images.githubusercontent.com/662930/29991463-f3332c60-8f4c-11e7-8ab1-266aff8dd91a.gif)
+
 ## Getting Started
 
 *  Install with npm: `npm install -g jira-cl`
