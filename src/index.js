@@ -9,9 +9,6 @@ import jira from './jira';
 // Initiaize the config file
 jira.init().then(function(){
 
-	cl
-	  .version('1.0.0');
-
 
 	/**
 	 * Create issue

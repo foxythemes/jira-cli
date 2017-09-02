@@ -15,6 +15,7 @@ import Issues from './issues';
 import Projects from './projects';
 import Users from './users';
 import Versions from './versions';
+import pkg from "../package.json";
 
 // Singleton instance
 let instance = null;
@@ -230,6 +231,8 @@ class JiraCLI {
 			} else {
 				this.versions.listVersions( args );
 			}
+		} else {
+			console.log( pkg.version );
 		}
 	}
 
