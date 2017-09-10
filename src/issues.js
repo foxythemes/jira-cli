@@ -15,27 +15,34 @@ export default class JiraIssues {
 	*/
 	getMetaData() {
 		return jira.apiRequest('/issue/createmeta');	
+	}	
+
+	/**
+	* Get custom fields
+	*/
+	getFields() {
+		return jira.apiRequest('/field');	
 	}
 
 	/**
 	* Crate a new issue 
 	* Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
 	*/
-	createIssue( newIssue) {
+	createIssue( newIssue ) {
 		// Create new issue
 		jira.api.addNewIssue( newIssue )
-	  	.then(function( issue ) {
+			.then(function( issue ) {
 
-	  		let config = jira.config.defaults;
+				let config = jira.config.defaults;
 
-	  		console.log('');
-	    	console.log('New issue: ' + color.bold.red(issue.key));
-	    	console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
-	    	console.log('');
-	  	})
-	  	.catch(function( res ) {
-	  		jira.showErrors( res );
-	  	});
+				console.log('');
+				console.log('New issue: ' + color.bold.red(issue.key));
+				console.log(config.protocol + '://' + config.host + '/browse/' + issue.key);
+				console.log('');
+			})
+			.catch(function( res ) {
+				jira.showErrors( res );
+			});
 	}
 
 	/**
@@ -55,23 +62,23 @@ export default class JiraIssues {
 
 			// Populate projects, keys and their respective issue types
 			for ( var index in meta.projects ){
-		  		projects.push(meta.projects[index].name);
-		  		keys.push(meta.projects[index].key);
-		  		issueTypes.push(meta.projects[index].issuetypes);
-		  	}
+					projects.push(meta.projects[index].name);
+					keys.push(meta.projects[index].key);
+					issueTypes.push(meta.projects[index].issuetypes);
+				}
 
-	  		// Create the project question
+				// Create the project question
 			var project = [
-			  {
-			    type: 'list',
-			    name: 'project',
-			    message: 'Project: ',
-			    choices: projects,
-			    filter: function( val ){
-			    	selectedProject = projects.indexOf( val );
-			    	return keys[selectedProject];
-			    }
-			  }
+				{
+					type: 'list',
+					name: 'project',
+					message: 'Project: ',
+					choices: projects,
+					filter: function( val ){
+						selectedProject = projects.indexOf( val );
+						return keys[selectedProject];
+					}
+				}
 			];
 
 			inquirer.prompt( project ).then(function( answers1 ){
@@ -80,31 +87,31 @@ export default class JiraIssues {
 				
 				// Get issue types of the selected project
 				for ( var i in issueTypes[selectedProject] ){
-			  		projectIssueTypes.push({
-			  			id: issueTypes[selectedProject][i].id,
-			  			name: issueTypes[selectedProject][i].name,
-			  			subtask: issueTypes[selectedProject][i].subtask
-			  		});
-			  	}
+						projectIssueTypes.push({
+							id: issueTypes[selectedProject][i].id,
+							name: issueTypes[selectedProject][i].name,
+							subtask: issueTypes[selectedProject][i].subtask
+						});
+					}
 
 				var questions = [
-				  {
-				    type: 'list',
-				    name: 'issueType',
-				    message: 'Issue type: ',
-				    choices: projectIssueTypes,
-				    filter: function( val ){
-				    	return projectIssueTypes.find(function( obj ){
-				    		return obj.name == val;
-				    	});
-				    }
-				  },
-				  {
-				  	type: 'input',
-				  	name: 'issueName',
-				  	message: 'Please provide the issue name :',
-				  	default: 'New Issue'
-				  }
+					{
+						type: 'list',
+						name: 'issueType',
+						message: 'Issue type: ',
+						choices: projectIssueTypes,
+						filter: function( val ){
+							return projectIssueTypes.find(function( obj ){
+								return obj.name == val;
+							});
+						}
+					},
+					{
+						type: 'input',
+						name: 'issueName',
+						message: 'Please provide the issue name :',
+						default: 'New Issue'
+					}
 				];
 
 				// Ask for the issue name and type
@@ -114,38 +121,58 @@ export default class JiraIssues {
 					var newIssue = {
 						fields: {
 							project: { 
-							  key: answers1.project
+								key: answers1.project
 							},
 							summary: answers2.issueName,
 							issuetype: {
-							  id: answers2.issueType.id
+								id: answers2.issueType.id
 							}
 						}
 					};
-			    
-			    	// Assign the issue to the current user if self option is passed
-			    	if( typeof options.self !== 'undefined' ) {
-			    		newIssue.fields.assignee = { name: jira.config.defaults.username };
-			    	}
+					
+						// Assign the issue to the current user if self option is passed
+						if( typeof options.self !== 'undefined' ) {
+							newIssue.fields.assignee = { name: jira.config.defaults.username };
+						}
 
-			    	if( answers2.issueType.subtask ){
-			    		var question = [
-			    			{ 
-			    				type: 'input',
-						  		name: 'issueParentName',
-						  		message: 'Please provide the parent issue key:'
-			    			}
-			    		];
+						if( answers2.issueType.subtask ){
+							var question = [
+								{ 
+									type: 'input',
+									name: 'issueParentName',
+									message: 'Please provide the parent issue key:'
+								}
+							];
 
-			    		inquirer.prompt( question ).then(function( answers3 ){
-			    			newIssue.fields.parent = {
-			    				key: answers3.issueParentName
-			    			};
-			    			_this.createIssue( newIssue );
-		    			});
-			    	} else {
-			    		_this.createIssue( newIssue );
-			    	}
+							inquirer.prompt( question ).then(function( answers3 ){
+								newIssue.fields.parent = {
+									key: answers3.issueParentName
+								};
+								_this.createIssue( newIssue );
+							});
+						} else if( answers2.issueType.name == 'Epic' ) {
+							// Get epic name custom field
+							_this.getFields().then(function(data){
+								let epicNameField = data.filter(function(val){
+									return val.custom && val.name == 'Epic Name';
+								});
+
+								var question = [
+									{
+										type: 'input',
+										name: 'epicName',
+										message: 'Epic name:'
+									}
+								];
+
+								inquirer.prompt( question ).then(function( answers3 ){
+									newIssue.fields[epicNameField[0].id] = answers3.epicName;
+									_this.createIssue( newIssue );
+								});
+							});
+						} else {
+							_this.createIssue( newIssue );
+						}
 				}).catch((err) => { 
 					console.log(err); 
 					process.exit();
@@ -194,12 +221,12 @@ export default class JiraIssues {
 	showIssues( issues ) {
 		const table = new Table({
 			chars: jira.tableChars,
-		  head: ['Key', 'Status', 'Summary']
+			head: ['Key', 'Status', 'Summary']
 		});
 
 		issues.forEach(function( issue ){
 			table.push(
-  			[color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
+				[color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
 			);
 		});
 
@@ -234,11 +261,11 @@ export default class JiraIssues {
 		}
 
 		table.push(
-		    { 'Summary': issue.fields.summary.trim() }
-		  , { 'Status': status }
-		  , { 'Type': issue.fields.issuetype.name }
-		  , { 'Project': issue.fields.project.name + ' (' + issue.fields.project.key + ')' }
-		  , { 'Reporter': issue.fields.reporter.name });
+				{ 'Summary': issue.fields.summary.trim() }
+			, { 'Status': status }
+			, { 'Type': issue.fields.issuetype.name }
+			, { 'Project': issue.fields.project.name + ' (' + issue.fields.project.key + ')' }
+			, { 'Reporter': issue.fields.reporter.name });
 
 		// If issue has assignee
 		if( issue.fields.assignee != null ) {
@@ -246,15 +273,15 @@ export default class JiraIssues {
 		}
 
 		table.push(
-		  { 'Priority': issue.fields.priority.name }
+			{ 'Priority': issue.fields.priority.name }
 		);
 
 		// Start with detail table
 		table.push(
-		  	{ '': '' }
-		  , { 'Id': issue.id }
-		  ,	{ 'Created on': moment( issue.fields.created ).format('MMMM Do YYYY, h:mm:ss a') }
-		  , { 'Updated on': moment( issue.fields.updated ).format('MMMM Do YYYY, h:mm:ss a') }
+				{ '': '' }
+			, { 'Id': issue.id }
+			,	{ 'Created on': moment( issue.fields.created ).format('MMMM Do YYYY, h:mm:ss a') }
+			, { 'Updated on': moment( issue.fields.updated ).format('MMMM Do YYYY, h:mm:ss a') }
 		);
 
 		// Fixes versions
@@ -370,23 +397,23 @@ export default class JiraIssues {
 	*/
 	async getIssueTransitions( issueId ) {
 		return jira.api.listTransitions( issueId )
-		  .then(function( res ) {
-		  	let transitions = [];
-		  	const transitionObj = res.transitions;
+			.then(function( res ) {
+				let transitions = [];
+				const transitionObj = res.transitions;
 
-		  	for (var index in transitionObj){
-		  		transitions.push({
-		  			id: transitionObj[index].id,
-		  			name: transitionObj[index].name,
-		  			to: transitionObj[index].to.name
-		  		});
-		  	}
+				for (var index in transitionObj){
+					transitions.push({
+						id: transitionObj[index].id,
+						name: transitionObj[index].name,
+						to: transitionObj[index].to.name
+					});
+				}
 
-		  	return transitions;
-		  })
-		  .catch(function(err) {
-		  		jira.showErrors(err);
-		  });
+				return transitions;
+			})
+			.catch(function(err) {
+					jira.showErrors(err);
+			});
 	}
 
 	/**
@@ -427,17 +454,17 @@ export default class JiraIssues {
 		} else {
 
 			var question = [
-			  	{
-				   type: 'list',
-				   name: 'transition',
-				   message: 'Transitions: ',
-				   choices: transitions,
-			    	filter: function(val){
-				    	return transitions.find(function(obj){
-				    		return obj.name == val;
-				    	});
-			    	}
-			  	}
+					{
+					 type: 'list',
+					 name: 'transition',
+					 message: 'Transitions: ',
+					 choices: transitions,
+						filter: function(val){
+							return transitions.find(function(obj){
+								return obj.name == val;
+							});
+						}
+					}
 			];
 
 			inquirer.prompt(question).then(function( res ) {
