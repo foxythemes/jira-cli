@@ -7,6 +7,7 @@ import url from 'url';
 import JiraApi from 'jira-client';
 import inquirer from 'inquirer';
 import color from 'chalk';
+import request from 'request-promise';
 
 // Local
 import Config from './config';
@@ -56,9 +57,14 @@ class JiraCLI {
 
 		// Get the config file
 		return this.config.init( this.configFileName ).then(function( r ){
+			let options = r;
+			if (r.proxy) {
+				const proxiedRequest = request.defaults({ proxy: r.proxy });
+				options = Object.assign({}, r, { request: proxiedRequest });
+			}
 
 			// Connect  to Jira
-			_self.api = new JiraApi( r );
+			_self.api = new JiraApi( options );
 		});
 	}
 
