@@ -115,7 +115,7 @@ class JiraCLI {
 				let messages = response.error.errorMessages;
 		  	
 
-			  	if ( messages.length ) {
+			  	if ( messages && messages.length ) {
 			  		for (var key in messages) {
 					  	console.log( color.red( '  Error: ' + messages[key] ) );
 					}
@@ -160,7 +160,7 @@ class JiraCLI {
 			// Remove config file
 			if ( cmd == 'remove' ){
 				this.config.removeConfigFile();
-			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board'){
+			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board' || cmd == 'proxy'){
 
 				const val = process.argv.slice(4)[0];
 
