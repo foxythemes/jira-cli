@@ -32,6 +32,7 @@
     "jira-client": "^4.2.0",
     "moment": "^2.17.1",
     "opn": "^4.0.2",
+    "request-promise": "^4.2.2",
     "rimraf": "^2.5.4"
   },
   "devDependencies": {

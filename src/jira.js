@@ -7,6 +7,7 @@ import url from 'url';
 import JiraApi from 'jira-client';
 import inquirer from 'inquirer';
 import color from 'chalk';
+import request from 'request-promise';
 
 // Local
 import Config from './config';
@@ -56,9 +57,14 @@ class JiraCLI {
 
 		// Get the config file
 		return this.config.init( this.configFileName ).then(function( r ){
+			let options = r;
+			if (r.proxy) {
+				const proxiedRequest = request.defaults({ proxy: r.proxy });
+				options = Object.assign({}, r, { request: proxiedRequest });
+			}
 
 			// Connect  to Jira
-			_self.api = new JiraApi( r );
+			_self.api = new JiraApi( options );
 		});
 	}
 
@@ -109,7 +115,7 @@ class JiraCLI {
 				let messages = response.error.errorMessages;
 		  	
 
-			  	if ( messages.length ) {
+			  	if ( messages && messages.length ) {
 			  		for (var key in messages) {
 					  	console.log( color.red( '  Error: ' + messages[key] ) );
 					}
@@ -154,7 +160,7 @@ class JiraCLI {
 			// Remove config file
 			if ( cmd == 'remove' ){
 				this.config.removeConfigFile();
-			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board'){
+			} else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board' || cmd == 'proxy'){
 
 				const val = process.argv.slice(4)[0];
 
