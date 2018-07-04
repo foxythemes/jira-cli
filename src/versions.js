@@ -1,6 +1,6 @@
 // Packages
 import color from 'chalk';
-import Table from 'cli-table2';
+import Table from 'cli-table3';
 
 // Local
 import jira from './jira';
