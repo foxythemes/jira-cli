@@ -218,15 +218,23 @@ export default class JiraIssues {
 	/**
 	* Show issues in a table format
 	*/
-	showIssues( issues ) {
+	showIssues( issues, sorted = false ) {
 		const table = new Table({
 			chars: jira.tableChars,
-			head: ['Key', 'Status', 'Summary']
+			head: ['Key', 'Status', 'Due Date', 'Summary']
 		});
 
+		if ( sorted ) {
+			issues.sort( (a, b) => {
+				var aDate = new Date(a.fields.duedate)
+				var bDate = new Date(b.fields.duedate)
+				return aDate - bDate
+			});
+		}
+		
 		issues.forEach(function( issue ){
 			table.push(
-				[color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
+				[color.blue( issue.key ),  color.green( issue.fields.status.name ), color.green( issue.fields.duedate), issue.fields.summary ]
 			);
 		});
 
@@ -305,7 +313,7 @@ export default class JiraIssues {
 	/**
 	* Get default issues summary
 	*/
-	summary( user ) {
+	summary( user, sorted = false ) {
 		const _this = this;
 		let jql;
 
@@ -321,7 +329,7 @@ export default class JiraIssues {
 				jira.showErrors( r );
 			} else {
 				if( r.total ){
-					_this.showIssues( r.issues );
+					_this.showIssues( r.issues, sorted);
 				}
 			}
 		}).catch(function( r ){
