@@ -218,20 +218,12 @@ export default class JiraIssues {
 	/**
 	* Show issues in a table format
 	*/
-	showIssues( issues, sorted = false ) {
+	showIssues( issues ) {
 		const table = new Table({
 			chars: jira.tableChars,
 			head: ['Key', 'Status', 'Due Date', 'Summary']
 		});
 
-		if ( sorted ) {
-			issues.sort( (a, b) => {
-				var aDate = new Date(a.fields.duedate)
-				var bDate = new Date(b.fields.duedate)
-				return aDate - bDate
-			});
-		}
-		
 		issues.forEach(function( issue ){
 			table.push(
 				[color.blue( issue.key ),  color.green( issue.fields.status.name ), color.green( issue.fields.duedate), issue.fields.summary ]
@@ -322,14 +314,16 @@ export default class JiraIssues {
 		} else {
 			jql = 'assignee = currentUser() and resolution = Unresolved';
 		}
-
+		if ( sorted ) {
+			jql += ' ORDER BY duedate ASC'
+		}
 		jira.api.searchJira( jql ).then(function( r ){
 
 			if ( typeof r.warningMessages !== 'undefined' ) {
 				jira.showErrors( r );
 			} else {
 				if( r.total ){
-					_this.showIssues( r.issues, sorted);
+					_this.showIssues( r.issues);
 				}
 			}
 		}).catch(function( r ){
