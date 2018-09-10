@@ -201,6 +201,26 @@ export default class JiraIssues {
   }
 
   /**
+   * search issue viq raw jql
+   */
+
+  jqlSearch ( jql_string ) {
+    const _this = this;
+    jira.api.searchJira( jql_string ).then(function( r ){
+      if( r.total ){
+        _this.showIssues( r.issues );
+        console.log( color.bold( "  Total issues found: " + color.green( r.total ) ) );
+        console.log('');
+      } else {
+        jira.showError( "No issues found with search terms: '" + args + "'" );
+      }
+    }).catch(function( res ){
+      jira.showErrors( res );
+      process.exit();
+    });
+  }
+
+  /**
   * Open issue in default browser
   */
   openIssue( issue ) {
@@ -236,7 +256,7 @@ export default class JiraIssues {
   /**
   * Show issue detail in pretty format
   */
-  showIssue( issue ) {
+  showIssue( issue, detailed ) {
     const table = new Table({ chars: jira.tableChars });
     const detailTable = new Table({ chars: jira.tableChars });
     let status;
@@ -260,12 +280,18 @@ export default class JiraIssues {
       break;
     }
 
+    table.push({ 'Summary': issue.fields.summary.trim() });
+    if ( detailed ) {
+      table.push({ 'Desc': issue.fields.description })
+    };
     table.push(
-        { 'Summary': issue.fields.summary.trim() }
-      , { 'Status': status }
+        { 'Status': status }
       , { 'Type': issue.fields.issuetype.name }
       , { 'Project': issue.fields.project.name + ' (' + issue.fields.project.key + ')' }
       , { 'Reporter': issue.fields.reporter.name });
+    if ( detailed ) {
+      table.push({ 'Attachnemt count': issue.fields.attachment.length })
+    };
 
     // If issue has assignee
     if( issue.fields.assignee != null ) {
@@ -300,6 +326,17 @@ export default class JiraIssues {
     }
 
     console.log( table.toString() );
+    if ( detailed ) {
+      console.log('Comments:')
+      issue.fields.comment.comments.map((comment) => {
+        console.log(color.yellow('--------------------'));
+        console.log(color.italic(comment.body));
+        console.log();
+        console.log('Created: ' + moment(comment.created).format('MMMM Do YYYY, h:mm:ss a'))
+        console.log('Author: ' + comment.author.name);
+        console.log();
+      })
+    }
   }
 
   /**
@@ -347,11 +384,11 @@ export default class JiraIssues {
   /**
   * Find specific issue
   */
-  findIssue( issue ) {
+  findIssue( issue, detailed ) {
     const _this = this;
 
     jira.api.findIssue( issue ).then(function( r ){
-      _this.showIssue( r );
+      _this.showIssue( r, detailed );
     }).catch(function( res ){
       jira.showErrors( res );
       process.exit();
@@ -433,12 +470,46 @@ export default class JiraIssues {
   }
 
   /**
+   * list of issue transitions
+   */
+  async listTransitions( issueId ) {
+    const transitions = await this.getIssueTransitions(issueId);
+    const table = new Table({ chars: jira.tableChars, head: ['id', 'name', 'to'] });
+    transitions.map(function(tr) { 
+      table.push(
+        [
+          color.green(tr['id']),
+          tr['name'],
+          tr['to']
+        ]
+        )
+    });
+    console.log(color.bold.blue( issueId.toUpperCase() ) + ' available transitions:');
+    console.log(table.toString());
+    return transitions
+  }
+
+  /**
   * Make issue transition
   */
-  async makeTransition( issueId ){
+  async makeTransition( issueId, transitionValue ){
 
     const transitions = await this.getIssueTransitions(issueId);
     const _this = this;
+
+    const passedTransition = transitions.find(function(tr) { 
+      if ( tr.id == transitionValue || tr.name == transitionValue ) {
+        return tr;
+      }
+    });
+    if ( transitionValue && typeof(transitionValue) != typeof(true) && !passedTransition ) {
+      const listOfPossible = transitions.map((tr) => { return(`id: ${tr.id}, name: ${tr.name}`) })
+      const listOfPossibleForPrint = JSON.stringify(listOfPossible, null, 2)
+      jira.showErrors(
+        `Transition '${transitionValue}' does not found. list of possible transition:\n${listOfPossibleForPrint}`
+      );
+      return
+    }
 
     if ( transitions.length == 1 ) {
 
@@ -449,6 +520,16 @@ export default class JiraIssues {
           to: transitions[0].to
         };
 
+      return this.transitionIssue( issueId, obj );
+
+    } else if (passedTransition) {
+
+      const obj = {
+        transition: {
+          id: passedTransition.id
+        },
+        to: passedTransition.to
+      }
       return this.transitionIssue( issueId, obj );
 
     } else {

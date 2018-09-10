@@ -43,6 +43,7 @@ jira.init().then(function(){
     .command('search [search terms]')
     .description('Search issues')
     .alias('s')
+    .option("-j, --jql <jql search string>", "Search issues with raw jql")
     .action((c, o) => {
       jira.cmdSearch(c, o);
     });
@@ -71,11 +72,13 @@ jira.init().then(function(){
     .command('issue [command]')
     .description('Issue commands')
     .alias('i')
+    .option("-d, --details", "Print issue detailed info")
     .option("-r, --release <version>", "Get the given release issues")
     .option("-p, --project <projectKey>", "Set the current project")
     .option("-u, --user <username>", "Set the user name")
     .option("-a, --assign <username>", "Assign issue to a user")
     .option("-t, --transition [transitionName]", "Make issue transition")
+    .option("--trs, --transitions", "Get list of issue possible transitions")
     .option("-h, --help", "")
     .action((c, o) => {
       jira.cmdIssue(c, o);

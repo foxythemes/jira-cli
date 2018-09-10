@@ -186,8 +186,12 @@ class JiraCLI {
   /**
   * Search
   */
-  cmdSearch( args ){
-    this.issues.search( args );
+  cmdSearch( args, options ){
+    if ( options.jql ) {
+      this.issues.jqlSearch( options.jql );
+    } else {
+      this.issues.search( args );
+    } 
   }
 
   /**
@@ -281,8 +285,11 @@ class JiraCLI {
         // Assign issue to a user
         this.issues.assignIssue( args, options.assign );
       } else if ( options.transition ) {
-        //Make issue transition
+        // Make issue transition
         this.issues.makeTransition( args, options.transition);
+      } else if ( options.transitions ) {
+        // Show all posible issue transitions
+        this.issues.listTransitions( args );
       } else {
         // If none of the above options is passed then search for specific issue
         this.issues.findIssue( args );
