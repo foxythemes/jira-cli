@@ -246,8 +246,6 @@ class JiraCLI {
 	* Issues
 	*/
 	cmdIssue( args, options ) {
-
-		// If no arguments(issues) are passed
 		if ( !process.argv.slice(3).length || typeof args === 'undefined' ){
 
 			// Get the release issues if --release option is passed
@@ -260,7 +258,7 @@ class JiraCLI {
 				}
 
 			} else if ( options.user ) {
-				
+			
 				// Show user summary if user option is passed
 				this.issues.summary( options.user );
 
@@ -269,6 +267,8 @@ class JiraCLI {
 				// Show project issues
 				this.issues.getProjectIssues( options.project );
 
+			} else if ( options.sorted ) {
+				this.issues.summary( false, options.sorted);
 			} else {
 
 				// Show user open issues if no arguments/options are passed 

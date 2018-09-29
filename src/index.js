@@ -75,7 +75,8 @@ jira.init().then(function(){
 	  .option("-p, --project <projectKey>", "Set the current project")
 	  .option("-u, --user <username>", "Set the user name")
 	  .option("-a, --assign <username>", "Assign issue to a user")
-	  .option("-t, --transition [transitionName]", "Make issue transition")
+		.option("-t, --transition [transitionName]", "Make issue transition")
+		.option("-s, --sorted", "Show issues sorted by due date")
 	  .option("-h, --help", "")
 	  .action((c, o) => {
 	  	jira.cmdIssue(c, o);
