@@ -1,7 +1,7 @@
 // Packages
 import inquirer from 'inquirer';
 import color from 'chalk';
-import Table from 'cli-table2';
+import Table from 'cli-table3';
 import moment from 'moment';
 import opn from 'opn';
 
