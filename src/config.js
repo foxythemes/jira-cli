@@ -207,6 +207,18 @@ export default class Config {
 					}
 				}
 			}
+		} else if ( cmd == 'proxy' ) {
+			if ( typeof val === 'undefined' ) {
+				console.log( '' );
+				console.log( '  Current proxy: ' + color.blue.bold(this.defaults.proxy ? this.defaults.proxy : 'not defined') );
+				console.log( '' );
+			} else {
+				const proxyVal = val === 'remove' ? undefined : val;
+
+				this.defaults.proxy = proxyVal;
+
+				this.updateConfigFile();
+			}
 		}
 	}
 

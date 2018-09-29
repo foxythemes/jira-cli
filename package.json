@@ -1,6 +1,6 @@
 {
   "name": "jira-cl",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "description": "A Jira command line client",
   "author": "Eduardo Henao & Miguel Henao",
   "license": "MIT",
@@ -30,8 +30,9 @@
     "fs-promise": "^1.0.0",
     "inquirer": "^1.2.3",
     "jira-client": "^4.2.0",
-    "moment": "^2.17.1",
+    "moment": "^2.19.3",
     "opn": "^4.0.2",
+    "request-promise": "^4.2.2",
     "rimraf": "^2.5.4"
   },
   "devDependencies": {
