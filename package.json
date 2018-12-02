@@ -31,7 +31,7 @@
     "inquirer": "^1.2.3",
     "jira-client": "^4.2.0",
     "moment": "^2.19.3",
-    "opn": "^4.0.2",
+    "opn": "^5.4.0",
     "request-promise": "^4.2.2",
     "rimraf": "^2.5.4"
   },

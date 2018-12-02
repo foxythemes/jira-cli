@@ -11,21 +11,21 @@ import jira from './jira';
 export default class JiraIssues {
 
   /**
-  * Get required meta data to create issues 
+  * Get required meta data to create issues
   */
   getMetaData() {
-    return jira.apiRequest('/issue/createmeta');  
-  } 
+    return jira.apiRequest('/issue/createmeta');
+  }
 
   /**
   * Get custom fields
   */
   getFields() {
-    return jira.apiRequest('/field'); 
+    return jira.apiRequest('/field');
   }
 
   /**
-  * Crate a new issue 
+  * Crate a new issue
   * Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
   */
   createIssue( newIssue ) {
@@ -52,10 +52,10 @@ export default class JiraIssues {
   createIssueObj( options = {} ) {
 
     const _this = this;
-    
+
     this.getMetaData().then(function( meta ){
 
-      var projects = []; 
+      var projects = [];
       var keys = [];
       var issueTypes = [];
       var selectedProject;
@@ -84,7 +84,7 @@ export default class JiraIssues {
       inquirer.prompt( project ).then(function( answers1 ){
 
         var projectIssueTypes = [];
-        
+
         // Get issue types of the selected project
         for ( var i in issueTypes[selectedProject] ){
             projectIssueTypes.push({
@@ -120,7 +120,7 @@ export default class JiraIssues {
           // Create the issue object
           var newIssue = {
             fields: {
-              project: { 
+              project: {
                 key: answers1.project
               },
               summary: answers2.issueName,
@@ -129,7 +129,7 @@ export default class JiraIssues {
               }
             }
           };
-          
+
             // Assign the issue to the current user if self option is passed
             if( typeof options.self !== 'undefined' ) {
               newIssue.fields.assignee = { name: jira.config.defaults.username };
@@ -137,7 +137,7 @@ export default class JiraIssues {
 
             if( answers2.issueType.subtask ){
               var question = [
-                { 
+                {
                   type: 'input',
                   name: 'issueParentName',
                   message: 'Please provide the parent issue key:'
@@ -173,8 +173,8 @@ export default class JiraIssues {
             } else {
               _this.createIssue( newIssue );
             }
-        }).catch((err) => { 
-          console.log(err); 
+        }).catch((err) => {
+          console.log(err);
           process.exit();
         });
       });
@@ -182,7 +182,7 @@ export default class JiraIssues {
   }
 
   /**
-  * Search issues 
+  * Search issues
   */
   search ( args ) {
     const _this = this;
@@ -208,7 +208,7 @@ export default class JiraIssues {
     let config = jira.config.defaults;
 
     jira.api.findIssue( issue ).then(function(){
-      opn( config.protocol + '://' + config.host + '/browse/' + issue );
+      opn( config.protocol + '://' + config.host + '/browse/' + issue, {wait: false});
     }).catch(function( res ){
       jira.showErrors( res );
       process.exit();
@@ -245,7 +245,7 @@ export default class JiraIssues {
     switch( issue.fields.status.name ) {
       case 'Done':
         status = color.green( 'Done' );
-      break;      
+      break;
 
       case 'In Progress':
         status = color.yellow( 'In Progress' );
@@ -419,7 +419,7 @@ export default class JiraIssues {
   /**
   * API issue transition
   */
-  transitionIssue( issueId, transitionObj ){  
+  transitionIssue( issueId, transitionObj ){
 
     return jira.api.transitionIssue( issueId, transitionObj )
     .then( function(res){
