@@ -26,7 +26,7 @@ class JiraCLI {
   constructor(){
 
     // Set the config file name
-    this.configFileName = '.jira-cl.json';
+    this.configFileName = '.jira-cli.json';
 
     // Create instance of each module
     this.config = new Config;
