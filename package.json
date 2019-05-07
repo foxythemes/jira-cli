@@ -28,7 +28,7 @@
     "cli-table3": "^0.5.0",
     "commander": "^2.9.0",
     "fs-promise": "^1.0.0",
-    "inquirer": "^1.2.3",
+    "inquirer": "^6.3.1",
     "jira-client": "^4.2.0",
     "moment": "^2.19.3",
     "opn": "^5.4.0",

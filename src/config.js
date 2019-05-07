@@ -78,10 +78,10 @@ export default class Config {
       const protocol = answers.protocol ? 'https' : 'http';
 
       const config = {
-        protocol: protocol,
-        host: answers.host,
-        username: answers.username,
-        password: answers.password,
+        protocol: protocol.trim(),
+        host: answers.host.trim(),
+        username: answers.username.trim(),
+        password: answers.password.trim(),
         apiVersion: '2',
         strictSSL: true
       };
@@ -99,7 +99,7 @@ export default class Config {
 
   /**
   * Remove config file
-  */  
+  */
   removeConfigFile() {
     fs.unlinkSync( this.filePath );
     console.log('');
@@ -110,7 +110,7 @@ export default class Config {
 
   /**
   * Update config file
-  */  
+  */
   updateConfigFile( ) {
     const filePath = this.filePath;
 
@@ -127,7 +127,7 @@ export default class Config {
 
   /**
   * Update config record
-  */  
+  */
   async updateConfigRecord( cmd, val, options ) {
 
     const _this = this;
@@ -189,7 +189,7 @@ export default class Config {
 
           _this.defaults.defaultBoard = res.board.id;
           _this.updateConfigFile();
-          
+
         });
       } else {
         if ( typeof this.defaults.defaultBoard === 'undefined' ) {
@@ -200,7 +200,7 @@ export default class Config {
           if ( options.remove ) {
             delete this.defaults.defaultBoard;
             this.updateConfigFile();
-          } else {        
+          } else {
             const defaultBoard = await jira.boards.getBoard( this.defaults.defaultBoard );
             console.log( '' );
             console.log( '  Your default board is: ' + color.green.bold( defaultBoard.name ) );
