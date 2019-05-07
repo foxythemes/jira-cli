@@ -78,10 +78,10 @@ export default class Config {
       const protocol = answers.protocol ? 'https' : 'http';
 
       const config = {
-        protocol: protocol,
+        protocol: protocol.trim(),
         host: answers.host.trim(),
-        username: answers.username,
-        password: answers.password,
+        username: answers.username.trim(),
+        password: answers.password.trim(),
         apiVersion: '2',
         strictSSL: true
       };
