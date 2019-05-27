@@ -21,6 +21,7 @@
     "lint": "eslint ./",
     "test": "npm run lint -s",
     "docs": "hugo server --disableFastRender",
+    "docs-production": "hugo --cleanDestinationDir",
     "prepublish": "npm run build"
   },
   "dependencies": {
