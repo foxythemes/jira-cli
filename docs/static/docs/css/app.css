@@ -6214,7 +6214,7 @@ button:focus {
 
 /* Pretty printing styles. Used with prettify.js. */
 pre {
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.5;
   font-family: "Source Code Pro", monospace; 
   border-radius: 4px;
@@ -6236,7 +6236,7 @@ pre {
 
 pre {
   border: 0;
-  padding: 36px;
+  padding: 30px;
   margin-bottom: 35px;
   background-color: #070016;
   color: #EDEBE6; 
