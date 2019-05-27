@@ -7,6 +7,6 @@ active: true
 
 You can install JIRA CLI globally in your computer with npm like this:
 
-{{< highlight bash >}}
+{{< terminal >}}
 npm install -g jira-cl
-{{< /highlight >}}
+{{< /terminal >}}

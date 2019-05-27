@@ -8,20 +8,20 @@ active: true
 #### Host
 You can update the JIRA host using the `config host` command:
 
-{{< highlight bash >}}
+{{< terminal >}}
 jira config host 'your host'
-{{< /highlight >}}
+{{< /terminal >}}
 
 #### Username
 You can update your user name using the `config username` command:
 
-{{< highlight bash >}}
+{{< terminal >}}
 jira config username 'your username'
-{{< /highlight >}}
+{{< /terminal >}}
 
 #### Password
 You can update your password using the `config password` command:
 
-{{< highlight bash >}}
+{{< terminal >}}
 jira config password
-{{< /highlight >}}
+{{< /terminal >}}

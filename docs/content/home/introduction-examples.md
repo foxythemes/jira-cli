@@ -5,7 +5,7 @@ weight: 4
 active: true
 ---
 
-Here comes the best part, after you have made the [initial setup](#getting-started) you can test one of the following commands:
+After you have made the [initial setup](#getting-started) you can test one of the following commands:
 
 <table class="table">
     <thead>

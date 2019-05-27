@@ -14,8 +14,8 @@ When running the first time, it will ask you for:
 *   Password
 *   Enable https protocol
 
-After that it will create a new config in `"~/.jira-cli.json"` with this data, you can create or modify this file manually, to run this initial setup you just need to enter the main command like this:
+After that a new config file will be created in `"~/.jira-cli.json"`, you can create or modify this file manually. In order to run this initial setup you just need to enter the main command:
 
-{{< highlight bash >}}
+{{< terminal >}}
 jira
-{{< /highlight >}}
+{{< /terminal >}}

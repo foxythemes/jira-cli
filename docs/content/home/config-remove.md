@@ -7,6 +7,6 @@ active: true
 
 You can easily remove config file using the `remove` option:
 
-{{< highlight bash >}}
+{{< terminal >}}
 jira config remove
-{{< /highlight >}}
+{{< /terminal >}}
