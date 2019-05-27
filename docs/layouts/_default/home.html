@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{ partial "head" . }}
+    </head>
+    <body data-spy="scroll" data-target="#left-navbar" data-offset="40" class="docs-animate">
+        <div class="docs-wrapper">
+            {{ partial "navbar" . }}
+            {{ partial "sidebar" . }}
+            <div class="docs-content">
+                {{ $page := "" }}
+
+                {{ if .IsHome }}
+                    {{ $page = "/home" }}
+                {{ else }}
+                    {{ $page = .File.Path }}
+                {{ end }}
+
+                {{ $headless_bundle := site.GetPage $page }}
+                {{/* Load page sections */}}
+                {{ range $index, $st := where ( $headless_bundle.Resources.ByType "page" ) ".Params.active" "!=" false }}
+
+                    {{/* Fix Hugo's ContentBaseName returning wrong file base name when page section is within a bundle. */}}
+                    {{ $hash_id := $st.File.ContentBaseName }}
+
+                    {{ $css_classes := $st.Params.css_class | default "" }}
+
+                    <section id="{{$hash_id}}" {{with $css_classes}}class="{{$css_classes}}"{{end}}>
+                        {{ with $st.Params.title }}
+                            {{ if eq $st.Params.weight 1 }}
+                                <h1>{{ $st.Params.title }}</h1>
+                            {{ else }}
+                                <h2>{{ $st.Params.title }}</h2>
+                            {{ end }}
+                        {{ end }}
+                        {{ $st.Content }}
+                    </section>
+                {{ end }}
+                {{ partial "footer" . }}
+            </div>
+        </div>
+        {{ partial "footer-scripts" . }}
+    </body>
+</html>

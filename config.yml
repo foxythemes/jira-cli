@@ -1,0 +1,26 @@
+languageCode:           "en"
+title:                  "JIRA CLI"
+baseURL:                "https://docs.jiracli.com"
+enableInlineShortcodes: true
+
+pygmentsUseClasses:     true
+pygmentsCodeFences:     true
+
+buildDrafts:            true
+buildFuture:            true
+
+enableRobotsTXT:        true
+metaDataFormat:         "yaml"
+disableKinds:           ["404", "taxonomy", "taxonomyTerm", "RSS"]
+
+blackfriday:
+  fractions:            false
+
+publishDir:             "_gh_pages"
+archetypeDir:           "docs/archetypes"
+assetDir:               "docs/assets"
+contentDir:             "docs/content"
+dataDir:                "docs/data"
+layoutDir:              "docs/layouts"
+staticDir:              "docs/static"
+themesDir:              "docs/themes"
