@@ -18,5 +18,5 @@ To get detailed information about JIRA-CLI usage please visit the documentation 
 
 ## License
 
-Copyright (c) 2017 by Miguel Henao & Eduardo Henao
+Copyright (c) 2019 by Miguel Henao & Eduardo Henao
 Licensed under the MIT license.
