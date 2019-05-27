@@ -33,7 +33,7 @@ After you have made the [initial setup](#getting-started) you can test one of th
         </tr>
         <tr>
             <td>List users</td>
-            <td><code>jira issue</code></td>
+            <td><code>jira user</code></td>
             <td><code>jira i</code></td>
         </tr>
         <tr>
