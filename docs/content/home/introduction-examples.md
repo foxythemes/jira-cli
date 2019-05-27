@@ -34,7 +34,7 @@ After you have made the [initial setup](#introduction-getting-started) you can t
         <tr>
             <td>List users</td>
             <td><code>jira user</code></td>
-            <td><code>jira i</code></td>
+            <td><code>jira u</code></td>
         </tr>
         <tr>
             <td>Open issue in browser</td>
