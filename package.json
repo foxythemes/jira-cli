@@ -1,6 +1,6 @@
 {
   "name": "jira-cl",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Jira command line client",
   "author": "Eduardo Henao & Miguel Henao",
   "license": "MIT",
