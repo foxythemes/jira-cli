@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta name="generator" content="Hugo 0.55.6" />
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="img/favicon.png">
+<title>JIRA CLI - Documentation</title>
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+<script src="https://use.typekit.net/jzn3xac.js"></script>
+<script type="text/javascript">
+  try{Typekit.load({ async: true });}catch(e){}
+</script>
+<link rel="stylesheet" href="css/app.css" type="text/css"/>
+    </head>
+    <body data-spy="scroll" data-target="#left-navbar" data-offset="40" class="docs-animate">
+        <div class="docs-wrapper">
+            <nav class="navbar docs-topheader hidden-sm-up">
+    <a href="javascript:;" class="left-sidebar-toggle"></a>
+    <a href="#" class="navbar-brand"></a>
+</nav>
+            <div id="left-navbar" data-spy="affix" data-offset-top="0" class="left-sidebar">
+    <div class="left-sidebar__logo">
+        <img src="img/logo.png" alt="logo" class="logo">
+    </div>
+    <ul class="nav left-sidebar__elements">
+        <li class="nav-item"><a href="#introduction" class="nav-link">Introduction</a>
+            <ul class="nav sub-menu">
+                <li class="nav-item"><a href="#introduction-installation" class="nav-link">Installation</a>
+                </li>
+                <li class="nav-item"><a href="#introduction-getting-started" class="nav-link">Getting Started</a>
+                </li>
+                <li class="nav-item"><a href="#introduction-examples" class="nav-link">Examples</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item"><a href="#config" class="nav-link">Commands</a>
+            <ul class="nav sub-menu">
+                <li class="nav-item"><a href="#config" class="nav-link">Configuration</a></li>
+                <li class="nav-item"><a href="#issues" class="nav-link">Issues</a></li>
+                <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="#users" class="nav-link">Users</a></li>
+                <li class="nav-item"><a href="#versions" class="nav-link">Versions</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+            <div class="docs-content">
+                
+
+                
+                    
+                
+
+                
+                
+                
+                    
+                    
+                    
+
+                    <section id="introduction" class="introduction">
+                        
+                            
+                                <h1>Introduction</h1>
+                            
+                        
+                        
+                        
+
+<p>JIRA CLI is a <a href="https://www.atlassian.com/software/jira">JIRA</a> command line client written in JavaScript and running on top of Node.js, it will help you to easily manage issues, projects, users and much more!</p>
+
+<h4 id="requirements">Requirements</h4>
+
+<p>In order to run this project you&rsquo;ll need to have installed <a href="https://nodejs.org">Node.js</a></p>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="introduction-installation" >
+                        
+                            
+                                <h2>Installation</h2>
+                            
+                        
+                        
+                        <p>You can install JIRA CLI globally in your computer with npm like this:</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">npm install -g jira-cl</code></pre>
+</div>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="introduction-getting-started" >
+                        
+                            
+                                <h2>Getting started</h2>
+                            
+                        
+                        
+                        <p><strong>JIRA CLI</strong> uses the power of <a href="https://docs.atlassian.com/jira/REST/cloud/">JIRA API</a> to perform all the different actions and queries.</p>
+
+<p>When running the first time, it will ask you for:</p>
+
+<ul>
+<li>JIRA host <span class="text-muted">(example.atlassian.net)</span></li>
+<li>User name</li>
+<li>Password</li>
+<li>Enable https protocol</li>
+</ul>
+
+<p>After that a new config file will be created in <code>&quot;~/.jira-cli.json&quot;</code>, you can create or modify this file manually. In order to run this initial setup you just need to enter the main command:</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira</code></pre>
+</div>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="introduction-examples" >
+                        
+                            
+                                <h2>Examples</h2>
+                            
+                        
+                        
+                        <p>After you have made the <a href="#introduction-getting-started">initial setup</a> you can test one of the following commands:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Command</th>
+            <th>Alias</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>List your open issues</td>
+            <td><code>jira issue</code></td>
+            <td><code>jira i</code></td>
+        </tr>
+        <tr>
+            <td>Create new issue</td>
+            <td><code>jira create</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>List projects</td>
+            <td><code>jira project</code></td>
+            <td><code>jira p</code></td>
+        </tr>
+        <tr>
+            <td>List users</td>
+            <td><code>jira user</code></td>
+            <td><code>jira i</code></td>
+        </tr>
+        <tr>
+            <td>Open issue in browser</td>
+            <td><code>jira open &lt;issue key&gt;</code></td>
+            <td><code>jira o &lt;issue key&gt;</code></td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Note:</strong> You will only see data you have access to</p>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="config" >
+                        
+                            
+                                <h2>Configuration</h2>
+                            
+                        
+                        
+                        <p>As seen in the <a href="#introduction-getting-started">Getting Started</a>, we use a config file to save the user auth data in your computer. There are some commands to manipulate this file.</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira config &lt;command&gt;</code></pre>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Update the JIRA host</td>
+            <td><code>host</code></td>
+        </tr>
+        <tr>
+            <td>Update username</td>
+            <td><code>username</code></td>
+        </tr>
+        <tr>
+            <td>Remove config file </td>
+            <td><code>remove</code></td>
+        </tr>
+        <tr>
+            <td>Set default board </td>
+            <td><code>board --set</code></td>
+        </tr>
+    </tbody>
+</table>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="issues" >
+                        
+                            
+                                <h2>Issues</h2>
+                            
+                        
+                        
+                        
+
+<p>Depending on how your organization is using JIRA, an issue could represent a software bug, a project task, a helpdesk ticket, a leave request form, etc.</p>
+
+<p>By default <code>jira issue</code> or <code>jira i</code> shows all the open issues assigned to you.</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira issue &lt;command&gt; [options]</code></pre>
+</div>
+
+<h5 id="commands">Commands</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Create a new issue</td>
+            <td><code>create</code></td>
+        </tr>
+    </tbody>
+</table>
+
+<h5 id="options">Options</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Option</th>
+            <th>Alias</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Filter issues by project</td>
+            <td><code>--project &lt;project key&gt;</code></td>
+            <td><code>-p &lt;project key&gt;</code></td>
+        </tr>
+        <tr>
+            <td>Filter issues by user name</td>
+            <td><code>--user &lt;project key&gt;</code></td>
+            <td><code>-u &lt;project key&gt;</code></td>
+        </tr>
+        <tr>
+            <td>Filter issues by release</td>
+            <td><code>--release &lt;release name&gt;</code></td>
+            <td><code>-r &lt;release name&gt;</code></td>
+        </tr>
+    </tbody>
+</table>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="issues-actions" >
+                        
+                            
+                                <h2>Issue Actions</h2>
+                            
+                        
+                        
+                        <p>We can also access to specific issue actions by inserting the issue id.</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira issue &lt;issue key&gt; [options]</code></pre>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width: 30%;">Description</th>
+            <th>Command</th>
+            <th>Alias</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Assign issue to user</td>
+            <td><code>--assign &lt;username&gt;</code></td>
+            <td><code>-a &lt;username&gt;</code></td>
+        </tr>
+        <tr>
+            <td>Execute issue transition <br><small>if no transition name is passed it executes the next avaialble.</small></td>
+            <td><code>--transition [transition name]</code></td>
+            <td><code>-t [transition name]</code></td>
+        </tr>
+        <tr>
+            <td>Assign issue to user</td>
+            <td><code>--assign &lt;username&gt;</code></td>
+            <td><code>-a &lt;username&gt;</code></td>
+        </tr>
+    </tbody>
+</table>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="projects" >
+                        
+                            
+                                <h2>Projects</h2>
+                            
+                        
+                        
+                        
+
+<p>Access to JIRA projects data, go <a href="https://confluence.atlassian.com/adminjiraserver/defining-a-project-938847066.html">here</a> if you want to know more about what projects.</p>
+
+<h4 id="list-all-projects">List all projects</h4>
+
+<p>The <code>jira project</code> command allows you to list all your JIRA projects, you can also use its alias <code>jira p</code></p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira project</code></pre>
+</div>
+
+<h4 id="example-output">Example output</h4>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">Key    Name             
+EP     Example Project          
+AW     Awesome Project 
+HD     Help Desk               </code></pre>
+</div>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="users" >
+                        
+                            
+                                <h2>Users</h2>
+                            
+                        
+                        
+                        <p>Access to your JIRA users data, the <code>user</code> command allows you to list all your JIRA users, you can also use its alias <code>u</code>.</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira user</code></pre>
+</div>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="versions" >
+                        
+                            
+                                <h2>Versions</h2>
+                            
+                        
+                        
+                        
+
+<p>List your project versions by passing the project key after the <code>version</code> command.</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira version &lt;project key&gt;</code></pre>
+</div>
+
+<h4 id="example-output">Example output</h4>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">Name     Status       Release Date 
+v1.0.0   Released     2017-03-14   
+v1.3.0   Released     2018-08-01   
+v2.0.0   Unreleased                </code></pre>
+</div>
+
+                    </section>
+                
+                    
+                    
+                    
+
+                    <section id="versions-create" >
+                        
+                            
+                                <h2>Creating Versions</h2>
+                            
+                        
+                        
+                        
+
+<p>You can also create versions by passing the number version you want to create as parameter like this:</p>
+
+<div class="highlight">
+<pre class="chroma"><code class="language-bash" data-lang="bash">jira version &lt;project key&gt; &lt;version number&gt; [options]</code></pre>
+</div>
+
+<h4 id="options">Options</h4>
+
+<p>You can set the description, start and release date by passing the following options:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Option</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Version detail</td>
+            <td><code>--description &lt;project key&gt; &lt;description&gt;</code></td>
+            <td><code>jira version PK -d "Description"</code></td>
+        </tr>
+        <tr>
+            <td>Start date</td>
+            <td><code>--start-date &lt;date in "d/MMM/yy" format&gt;</code></td>
+            <td><code>jira version PK -s "13/Aug/2017"</code></td>
+        </tr>
+        <tr>
+            <td>Release date</td>
+            <td><code>--release-date &lt;date in "d/MMM/yy" format&gt;</code></td>
+            <td><code>jira version PK -r "13/Aug/2017"</code></td>
+        </tr>
+    </tbody>
+</table>
+
+                    </section>
+                
+                <section>
+    <div class="footer">
+        <nav class="nav footer-nav">
+            <li class="nav-item">
+                <a href="https://jiracli.com" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="https://github.com/foxythemes/jira-cli" class="nav-link">Source Code</a>
+            </li>
+            <li class="nav-item">
+                <a href="https://github.com/foxythemes/jira-cli/issues" class="nav-link">Create Issue</a>
+            </li>
+        </nav>
+        <p class="footer-description">JIRA CLI is made with a lot of love by <a href="https://github.com/miguelmich">@miguelmich</a>, <a href="https://github.com/behuti">@behuti</a> and awesome <a href="https://github.com/foxythemes/jira-cli/graphs/contributors">contributors</a>, this website was designed by <a href="https://twitter.com/delyrannte">@delyrante</a>.</p>
+        <p class="footer-description">This project is licensed under <a href="https://mitlicense.org/">MIT</a>, Docs <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0.</a></p>
+    </div>
+</section>
+            </div>
+        </div>
+        <script src="lib/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="lib/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="lib/prettify/prettify.js" type="text/javascript"></script>
+<script src="lib/prettify/lang-css.js" type="text/javascript"></script>
+<script src="js/app.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+      
+      App.init();
+  });
+</script>
+    </body>
+</html>
