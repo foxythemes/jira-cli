@@ -1,11 +1,8 @@
 // Native
-import path from 'path';
-import fs from 'fs-promise';
 import url from 'url';
 
 // Packages
 import JiraApi from 'jira-client';
-import inquirer from 'inquirer';
 import color from 'chalk';
 import request from 'request-promise';
 
