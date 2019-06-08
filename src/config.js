@@ -59,12 +59,13 @@ export default class Config {
       {
         type: 'input',
         name: 'username',
-        message: 'Please provide your jira username :'
+        message: 'Please provide your jira username:',
+        default: 'example@domain.com'
       },
       {
         type: 'password',
         name: 'password',
-        message: 'Type your jira password:'
+        message: 'Enter your jira API token:'
       },
       {
         type: 'confirm',
