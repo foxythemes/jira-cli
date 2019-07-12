@@ -26,7 +26,7 @@ jira issue <issue key> [options]
             <td><code>-a &lt;username&gt;</code></td>
         </tr>
         <tr>
-            <td>Execute issue transition <br><small>if no transition name is passed it executes the next avaialble.</small></td>
+            <td>Execute issue transition <br><small>if no transition name is passed it executes the next available one.</small></td>
             <td><code>--transition [transition name]</code></td>
             <td><code>-t [transition name]</code></td>
         </tr>
