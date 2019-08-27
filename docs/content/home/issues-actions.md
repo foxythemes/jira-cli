@@ -35,5 +35,10 @@ jira issue <issue key> [options]
             <td><code>--assign &lt;username&gt;</code></td>
             <td><code>-a &lt;username&gt;</code></td>
         </tr>
+        <tr>
+            <td>Add comment to issue</td>
+            <td><code>--comment &lt;comment&gt;</code></td>
+            <td><code>-c &lt;comment&gt;</code></td>
+        </tr>
     </tbody>
 </table>

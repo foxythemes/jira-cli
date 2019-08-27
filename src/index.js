@@ -5,7 +5,7 @@ import cl from 'commander';
 
 // Local
 import jira from './jira';
- 
+
 // Initiaize the config file
 jira.init().then(function(){
 
@@ -76,6 +76,7 @@ jira.init().then(function(){
     .option("-u, --user <username>", "Set the user name")
     .option("-a, --assign <username>", "Assign issue to a user")
     .option("-t, --transition [transitionName]", "Make issue transition")
+		.option("-c, --comment <comment>", "Add comment to issue")
     .option("-h, --help", "")
     .action((c, o) => {
       jira.cmdIssue(c, o);

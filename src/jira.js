@@ -110,7 +110,7 @@ class JiraCLI {
       if ( typeof response.error !== 'undefined' ) {
         let errors = response.error.errors;
         let messages = response.error.errorMessages;
-        
+
 
           if ( messages && messages.length ) {
             for (var key in messages) {
@@ -257,7 +257,7 @@ class JiraCLI {
         }
 
       } else if ( options.user ) {
-        
+
         // Show user summary if user option is passed
         this.issues.summary( options.user );
 
@@ -268,7 +268,7 @@ class JiraCLI {
 
       } else {
 
-        // Show user open issues if no arguments/options are passed 
+        // Show user open issues if no arguments/options are passed
         this.issues.summary( false );
       }
 
@@ -280,7 +280,10 @@ class JiraCLI {
       } else if ( options.transition ) {
         //Make issue transition
         this.issues.makeTransition( args, options.transition);
-      } else {
+      } else if (options.comment) {
+				// Add comment to issue
+				this.issues.addComment(args, options.comment);
+			} else {
         // If none of the above options is passed then search for specific issue
         this.issues.findIssue( args );
       }
