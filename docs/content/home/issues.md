@@ -47,8 +47,8 @@ jira issue <command> [options]
         </tr>
         <tr>
             <td>Filter issues by user name</td>
-            <td><code>--user &lt;project key&gt;</code></td>
-            <td><code>-u &lt;project key&gt;</code></td>
+            <td><code>--user &lt;user name&gt;</code></td>
+            <td><code>-u &lt;user name&gt;</code></td>
         </tr>
         <tr>
             <td>Filter issues by release</td>
