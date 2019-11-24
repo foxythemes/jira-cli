@@ -441,7 +441,7 @@ export default class JiraIssues {
 
     let transitionObj;
 
-    if (transitionName) {
+    if (typeof transitionName === 'string' && transitionName.length > 0) {
       const transition = transitions.find(function(obj){
         return obj.name == transitionName;
       });
