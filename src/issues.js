@@ -480,4 +480,16 @@ export default class JiraIssues {
       });
     }
   }
+
+  /**
+  * Add comment to issue
+  */
+	addComment( issueId, comment ){
+	return jira.api.addComment( issueId, comment ).then(function (res) {
+				console.log(' Issue ' + issueId + ' successfully updated with comment:\n ' + comment);
+			}).catch(function (err) {
+				jira.showErrors(res);
+			});
+
+	}
 }
