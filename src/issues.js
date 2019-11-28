@@ -219,18 +219,39 @@ export default class JiraIssues {
   * Show issues in a table format
   */
   showIssues( issues ) {
-    const table = new Table({
-      chars: jira.tableChars,
-      head: ['Key', 'Status', 'Summary']
+    const _this = this;
+    
+    let issueSelectableList = [];
+    issues.forEach(function( issue){
+      const rowTable = new Table({
+        chars: { 'top': '' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
+               , 'bottom': '' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
+               , 'left': '' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+               , 'right': '' , 'right-mid': '' , 'middle': ' ' },
+        style: { 'padding-left': 0, 'padding-right': 0 }
+      });
+      rowTable.push([color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]);
+      issueSelectableList.push({ name: rowTable.toString(), key: issue.key});
     });
 
-    issues.forEach(function( issue ){
-      table.push(
-        [color.blue( issue.key ), color.green( issue.fields.status.name ), issue.fields.summary ]
-      );
-    });
+    var question = [
+      {
+       type: 'list',
+       name: 'selectedIssue',
+       message: 'Select Issue: ',
+       choices: issueSelectableList,
+       filter: function( val ){
+        return issueSelectableList.find(function( obj ){
+            return obj.name == val;
+          });
+       }
+      }
+    ];
 
-    console.log( table.toString() );
+    inquirer.prompt( question )
+        .then(function( res ){
+          _this.findIssue(res.selectedIssue.key);
+        });
   }
 
   /**
