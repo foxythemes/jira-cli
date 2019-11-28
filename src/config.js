@@ -71,13 +71,19 @@ export default class Config {
         type: 'confirm',
         name: 'protocol',
         message: 'Enable HTTPS Protocol?'
+      },
+      {
+        type: ' input',
+        name: 'port',
+        message: 'Provide your jira port: ',
+        default: 'https:443|http:80'
       }
     ];
 
     return inquirer.prompt(questions).then(function (answers) {
 
       const protocol = answers.protocol ? 'https' : 'http';
-
+      
       const config = {
         protocol: protocol.trim(),
         host: answers.host.trim(),
@@ -86,6 +92,9 @@ export default class Config {
         apiVersion: '2',
         strictSSL: true
       };
+
+      const port = !isNaN(answers.port.trim()) ? answers.port.trim() : (answers.protocol ? '443' : '80');
+      config.port = port; 
 
       return fs.writeFile(filePath, JSON.stringify(config), 'utf8')
         .then(function(){
@@ -152,6 +161,16 @@ export default class Config {
         console.log( '' );
       } else {
         this.defaults.host = val;
+
+        this.updateConfigFile();
+      }
+    } else if ( cmd == 'port' ) {
+      if ( typeof val === 'undefined' ) {
+        console.log( '' );
+        console.log( '  Current port: ' + color.blue.bold(this.defaults.port) );
+        console.log( '' );
+      } else {
+        this.defaults.port = val;
 
         this.updateConfigFile();
       }

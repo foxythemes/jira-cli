@@ -206,9 +206,10 @@ export default class JiraIssues {
   openIssue( issue ) {
     const _this = this;
     let config = jira.config.defaults;
+    let portUrlPart = config.port ? ':'+ config.port : '';
 
     jira.api.findIssue( issue ).then(function(){
-      opn( config.protocol + '://' + config.host + '/browse/' + issue, {wait: false});
+      opn( config.protocol + '://' + config.host + portUrlPart + '/browse/' + issue, {wait: false});
     }).catch(function( res ){
       jira.showErrors( res );
       process.exit();

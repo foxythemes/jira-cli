@@ -157,7 +157,7 @@ class JiraCLI {
       // Remove config file
       if ( cmd == 'remove' ){
         this.config.removeConfigFile();
-      } else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board' || cmd == 'proxy'){
+      } else if ( cmd == 'host' || cmd == 'username' || cmd == 'password' || cmd == 'board' || cmd == 'proxy' || cmd == 'port'){
 
         const val = process.argv.slice(4)[0];
 
