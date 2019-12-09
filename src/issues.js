@@ -435,25 +435,40 @@ export default class JiraIssues {
   /**
   * Make issue transition
   */
-  async makeTransition( issueId ){
+  async makeTransition( issueId, transitionName ){
 
     const transitions = await this.getIssueTransitions(issueId);
-    const _this = this;
 
-    if ( transitions.length == 1 ) {
+    let transitionObj;
 
-      const obj = {
+    if (typeof transitionName === 'string' && transitionName.length > 0) {
+      const transition = transitions.find(function(obj){
+        return obj.name == transitionName;
+      });
+
+      if (transition) {
+        transitionObj = {
+          transition: {
+            id: transition.id
+          },
+          to: transition.to
+        };
+      } else {
+        console.log( color.red( '  Error: The transition "' + transitionName + '" is not valid for this issue' ) );
+        return;
+      }
+    } else if ( transitions.length == 1 ) {
+
+      transitionObj = {
           transition: {
             id: transitions[0].id
           },
           to: transitions[0].to
         };
 
-      return this.transitionIssue( issueId, obj );
-
     } else {
 
-      var question = [
+      const question = [
           {
            type: 'list',
            name: 'transition',
@@ -467,17 +482,17 @@ export default class JiraIssues {
           }
       ];
 
-      inquirer.prompt(question).then(function( res ) {
+      const res = await inquirer.prompt(question);
 
-        const obj = {
+        transitionObj = {
           transition: {
             id: res.transition.id
           },
           to: res.transition.to
         };
+      }
 
-        return _this.transitionIssue( issueId, obj );
-      });
+      return this.transitionIssue( issueId, transitionObj );
     }
   }
 
