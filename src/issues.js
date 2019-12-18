@@ -262,6 +262,7 @@ export default class JiraIssues {
 
     table.push(
         { 'Summary': issue.fields.summary.trim() }
+      , { 'Description': issue.fields.description.trim() }
       , { 'Status': status }
       , { 'Type': issue.fields.issuetype.name }
       , { 'Project': issue.fields.project.name + ' (' + issue.fields.project.key + ')' }
