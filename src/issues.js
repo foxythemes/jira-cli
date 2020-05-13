@@ -362,16 +362,20 @@ export default class JiraIssues {
   * Assign issue to user
   */
   assignIssue( issue, user ) {
-    jira.apiRequest(`/issue/${issue}/assignee`,{
-      method: 'PUT',
-      followAllRedirects: true,
-      body: {
-        name: user
-      }
-    }).then(function(){
-      console.log();
-      console.log( color.green(`  Issue ${issue} successfully assigned to ${user}`) );
-      console.log();
+    this.selectAssignableUser(issue, user).then(function(userObj){
+      jira.apiRequest(`/issue/${issue}/assignee`,{
+        method: 'PUT',
+        followAllRedirects: true,
+        body: {
+          name: userObj.key
+        }
+      }).then(function(){
+        console.log();
+        console.log( color.green(`  Issue ${issue} successfully assigned to ${userObj.name}`) );
+        console.log();
+      }).catch(function( res ){
+        jira.showErrors( res );
+      });
     }).catch(function( res ){
       jira.showErrors( res );
     });
@@ -506,5 +510,57 @@ export default class JiraIssues {
 				jira.showErrors(res);
 			});
 
-	}
+  }
+  
+  /**
+   * Get Assignable users for the issue
+   * 
+   */
+  async getAssignableUsers (issueId, userSearch) {
+    return jira.apiRequest(`/user/assignable/search?startAt=0&maxResults=1000&username=${userSearch}&issueKey=${issueId}`);
+  }
+
+  /**
+   * Select Assignable users
+   * 
+   */
+  async selectAssignableUser(issueId, userSearch) {
+    const _this = this;
+    return new Promise(function(resolve, reject) {
+      _this.getAssignableUsers(issueId, userSearch).then(function(users){
+        var userObjs = [];
+        users.forEach(function(user){
+            userObjs.push({ name: `${user.name} <${user.emailAddress}>`, key: user.key});
+        });
+
+        if(userObjs.length == 0) {
+          reject("User not found!");
+        } else if(userObjs.length == 1) {
+          resolve(userObjs[0]);
+        } else {
+          var question = [
+            {
+              type: 'list',
+              name: 'userObj',
+              message: 'Select user: ',
+              choices: userObjs,
+              filter: function( val ){
+                return userObjs.find(function( obj ){
+                  return obj.name == val;
+                });
+              }
+            }
+          ];
+  
+          inquirer.prompt( question )
+          .then(function( res ) {
+            resolve(res.userObj);
+          });
+        }
+    }).catch(function(res) {
+      reject(res);
+    });
+    });
+  }
+    
 }
