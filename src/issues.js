@@ -516,21 +516,20 @@ export default class JiraIssues {
           },
           to: res.transition.to
         };
-      }
-
-      return this.transitionIssue( issueId, transitionObj );
     }
+
+    return this.transitionIssue( issueId, transitionObj );
   }
 
   /**
   * Add comment to issue
   */
 	addComment( issueId, comment ){
-	return jira.api.addComment( issueId, comment ).then(function (res) {
-				console.log(' Issue ' + issueId + ' successfully updated with comment:\n ' + comment);
-			}).catch(function (err) {
-				jira.showErrors(res);
-			});
+    return jira.api.addComment( issueId, comment ).then(function (res) {
+          console.log(' Issue ' + issueId + ' successfully updated with comment:\n ' + comment);
+        }).catch(function (err) {
+          jira.showErrors(res);
+        });
 
   }
   
