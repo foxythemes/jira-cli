@@ -6,43 +6,38 @@ import Table from 'cli-table3';
 import jira from './jira';
 
 export default class JiraVersions {
-
   /**
   * Show versions
   */
-  showVersions ( versions ) {
-
-    if ( versions.length ) {
+  showVersions(versions) {
+    if (versions.length) {
       const table = new Table({
         chars: jira.tableChars,
-        head: ['Name', 'Status', 'Release Date']
+        head: ['Name', 'Status', 'Release Date'],
       });
 
-      versions.forEach(function( version ){
-        const name = version.name;
-        const released = version.released ? color.green( 'Released' ) : color.red( 'Unreleased' );
+      versions.forEach((version) => {
+        const { name } = version;
+        const released = version.released ? color.green('Released') : color.red('Unreleased');
         const releaseDate = version.releaseDate ? version.releaseDate : '';
 
         table.push(
-        [ name, released, releaseDate ]
+          [name, released, releaseDate],
         );
       });
 
-      console.log( table.toString() );
+      console.log(table.toString());
     } else {
-      jira.showError( 'There are no releases for this project' );
+      jira.showError('There are no releases for this project');
     }
   }
 
   /**
   * Get versions
   */
-  async getVersions( project ) {
-
-    return jira.api.getVersions( project ).then(function( r ){
-      return r;
-    }).catch(function( res ){
-      jira.showErrors( res );
+  async getVersions(project) {
+    return jira.api.getVersions(project).then((r) => r).catch((res) => {
+      jira.showErrors(res);
       process.exit();
     });
   }
@@ -50,42 +45,43 @@ export default class JiraVersions {
   /**
   * List versions
   */
-  async listVersions ( project ) {
-    const versions = await this.getVersions( project );
+  async listVersions(project) {
+    const versions = await this.getVersions(project);
 
-    this.showVersions( versions );
+    this.showVersions(versions);
   }
 
   /**
   * Create Versions
   */
-  async createVersion ( project, { number, description, startDate, releaseDate } ) {
-
-    let object = {
+  async createVersion(project, {
+    number, description, startDate, releaseDate,
+  }) {
+    const object = {
       name: number,
-      project: project
+      project,
+    };
+
+    if (description) {
+      object.description = description;
     }
 
-    if(description) {
-      object['description'] = description;
+    if (startDate) {
+      object.userStartDate = startDate;
     }
 
-    if(startDate) {
-      object['userStartDate'] = startDate;
+    if (releaseDate) {
+      object.userReleaseDate = releaseDate;
     }
 
-    if(releaseDate) {
-      object['userReleaseDate'] = releaseDate;
-    }
-
-    return jira.api.createVersion( object )
-    .then(function( res ){
-      console.log('');
-      console.log('New version (' + color.bold.green( number ) + ') in project ' + color.bold( project ) + ' was created.');
-      console.log('');
-    })
-    .catch(function( res ){
-      jira.showErrors( res );
-    });
+    return jira.api.createVersion(object)
+      .then((res) => {
+        console.log('');
+        console.log(`New version (${color.bold.green(number)}) in project ${color.bold(project)} was created.`);
+        console.log('');
+      })
+      .catch((res) => {
+        jira.showErrors(res);
+      });
   }
 }

@@ -6,7 +6,6 @@ import Table from 'cli-table3';
 import jira from './jira';
 
 export default class JiraUsers {
-
   /**
   * Load jira projects
   */
@@ -22,15 +21,15 @@ export default class JiraUsers {
 
     const table = new Table({
       chars: jira.tableChars,
-      head: ['Username', 'Name']
+      head: ['Username', 'Name'],
     });
 
-    users.forEach(function ( user ) {
+    users.forEach((user) => {
       table.push(
-        [ user.name, user.displayName ]
+        [user.name, user.displayName],
       );
     });
 
-    console.log( table.toString() );
+    console.log(table.toString());
   }
 }

@@ -7,9 +7,7 @@ import cl from 'commander';
 import jira from './jira';
 
 // Initiaize the config file
-jira.init().then(function(){
-
-
+jira.init().then(() => {
   /**
    * Create issue
    */
@@ -17,11 +15,10 @@ jira.init().then(function(){
   cl
     .command('create [options]')
     .description('Create a new issue')
-    .option("-s, --self", "Assign the new issue to the current user")
+    .option('-s, --self', 'Assign the new issue to the current user')
     .action((c, o) => {
       jira.cmdCreate(c, o);
     });
-
 
   /**
    * Open in browser
@@ -47,7 +44,6 @@ jira.init().then(function(){
       jira.cmdSearch(c, o);
     });
 
-
   /**
    * Configuration
    */
@@ -55,13 +51,12 @@ jira.init().then(function(){
   cl
     .command('config [command]')
     .description('Configuration file options')
-    .option("-h, --help", "")
-    .option("-s, --set", "Set option")
-    .option("-r, --remove", "Remove option")
+    .option('-h, --help', '')
+    .option('-s, --set', 'Set option')
+    .option('-r, --remove', 'Remove option')
     .action((c, o) => {
       jira.cmdConfig(c, o);
     });
-
 
   /**
    * Issues
@@ -71,17 +66,16 @@ jira.init().then(function(){
     .command('issue [command]')
     .description('Issue commands')
     .alias('i')
-    .option("-r, --release <version>", "Get the given release issues")
-    .option("-p, --project <projectKey>", "Set the current project")
-    .option("-u, --user <username>", "Set the user name")
-    .option("-a, --assign <username>", "Assign issue to a user")
-    .option("-t, --transition [transitionName]", "Make issue transition")
-		.option("-c, --comment <comment>", "Add comment to issue")
-    .option("-h, --help", "")
+    .option('-r, --release <version>', 'Get the given release issues')
+    .option('-p, --project <projectKey>', 'Set the current project')
+    .option('-u, --user <username>', 'Set the user name')
+    .option('-a, --assign <username>', 'Assign issue to a user')
+    .option('-t, --transition [transitionName]', 'Make issue transition')
+    .option('-c, --comment <comment>', 'Add comment to issue')
+    .option('-h, --help', '')
     .action((c, o) => {
       jira.cmdIssue(c, o);
     });
-
 
   /**
    * Projects
@@ -91,11 +85,10 @@ jira.init().then(function(){
     .command('project [command]')
     .description('Project commands')
     .alias('p')
-    .option("-h, --help", "")
+    .option('-h, --help', '')
     .action((c, o) => {
       jira.cmdProject(c, o);
     });
-
 
   /**
    * Users
@@ -105,11 +98,10 @@ jira.init().then(function(){
     .command('user [command]')
     .description('User commands')
     .alias('u')
-    .option("-h, --help", "")
+    .option('-h, --help', '')
     .action((c, o) => {
       jira.cmdUser(c, o);
     });
-
 
   /**
    * Versions
@@ -119,15 +111,14 @@ jira.init().then(function(){
     .command('version [command]')
     .description('Versions command')
     .alias('v')
-    .option("-n, --number <version>", "Set the version number")
-    .option("-d, --description <string>", "Set the description")
-    .option("-s, --start-date <string>", "Set the start date")
-    .option("-r, --release-date <string>", "Set the release date")
+    .option('-n, --number <version>', 'Set the version number')
+    .option('-d, --description <string>', 'Set the description')
+    .option('-s, --start-date <string>', 'Set the start date')
+    .option('-r, --release-date <string>', 'Set the release date')
     // Get project versions
     .action((c, o) => {
       jira.cmdVersion(c, o);
     });
-
 
   /**
    * Show help if executes with no arguments
@@ -139,21 +130,18 @@ jira.init().then(function(){
 
   cl.parse(process.argv);
 
-
   /**
    * Execute default method if no registered command or no command is given
    */
 
-  if ( process.argv.slice(2).length  ) {
-
+  if (process.argv.slice(2).length) {
     // Check if an argument is passed in position 1
-    if ( typeof cl.args[1] !== 'undefined' ) {
-      if( !cl.args[1].constructor.name == "Command" ) {
-        jira.cmdDefault( cl );
+    if (typeof cl.args[1] !== 'undefined') {
+      if (!cl.args[1].constructor.name == 'Command') {
+        jira.cmdDefault(cl);
       }
-    }else{
-      jira.cmdDefault( cl );
+    } else {
+      jira.cmdDefault(cl);
     }
   }
-
 });

@@ -6,25 +6,24 @@ import Table from 'cli-table3';
 import jira from './jira';
 
 export default class JiraProjects {
-
   /**
   * Load jira projects
   */
   async loadProjects() {
     return jira.api.listProjects()
-      .then(function(projectsObj) {
-        let projects = [];
+      .then((projectsObj) => {
+        const projects = [];
 
-        for (var index in projectsObj){
+        for (const index in projectsObj) {
           projects.push({
             key: projectsObj[index].key,
-            name: projectsObj[index].name
+            name: projectsObj[index].name,
           });
         }
 
         return projects;
       })
-      .catch(function(err) {
+      .catch((err) => {
         console.error(err);
       });
   }
@@ -37,16 +36,16 @@ export default class JiraProjects {
 
     const table = new Table({
       chars: jira.tableChars,
-      head: ['Key', 'Name']
+      head: ['Key', 'Name'],
     });
 
-    projects.forEach(function ( project ) {
+    projects.forEach((project) => {
       table.push(
-        [ color.blue( project.key ), project.name ]
+        [color.blue(project.key), project.name],
       );
     });
 
-    console.log( table.toString() );
+    console.log(table.toString());
   }
 
   /**
