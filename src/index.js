@@ -72,6 +72,7 @@ jira.init().then(() => {
     .option('-a, --assign <username>', 'Assign issue to a user')
     .option('-t, --transition [transitionName]', 'Make issue transition')
     .option('-c, --comment <comment>', 'Add comment to issue')
+    .option('-v, --version <version>', 'Assign release version to the issue')
     .option('-h, --help', '')
     .action((c, o) => {
       jira.cmdIssue(c, o);

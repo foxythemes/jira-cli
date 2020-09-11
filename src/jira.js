@@ -270,6 +270,8 @@ class JiraCLI {
     } else if (options.comment) {
       // Add comment to issue
       this.issues.addComment(args, options.comment);
+    } else if (options.version) {
+      this.issues.setVersion(args, options.version);
     } else {
       // If none of the above options is passed then search for specific issue
       this.issues.findIssue(args);

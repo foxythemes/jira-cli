@@ -43,6 +43,20 @@ export default class JiraIssues {
       });
   }
 
+  setVersion(issue, version) {
+    jira.apiRequest(`/issue/${issue}`, {
+      method: 'PUT',
+      followAllRedirects: true,
+      body: { update: { fixVersions: [{ set: [{ name: version }] }] } },
+    }).then(() => {
+      console.log();
+      console.log(color.green(`  Issue ${issue} version successfully updated to ${version}`));
+      console.log();
+    }).catch((res) => {
+      jira.showErrors(res);
+    });
+  }
+
   /**
   * Crate a new issue object
   * Docs: https://docs.atlassian.com/jira/REST/cloud/#api/2/issue-createIssue
