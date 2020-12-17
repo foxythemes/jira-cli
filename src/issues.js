@@ -494,7 +494,6 @@ export default class JiraIssues {
 
       return this.transitionIssue( issueId, transitionObj );
     }
-  }
 
   /**
   * Add comment to issue
